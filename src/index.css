@@ -1,0 +1,76 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap");
+
+:root {
+  --bg-page: #f8f8f8;
+  --bg-surface: #ffffff;
+  --text-primary: #0d0d0d;
+  --text-secondary: #4a4a4a;
+
+  /* Nowy Akcent: Fioletowo-Różowy (Light Mode) */
+  --color-accent: #d43fb8;
+  --color-accent-hover: #f062d4;
+  --text-tertiary: #9d3088;
+
+  --color-border: #e0e0e0;
+  --color-destructive: #ff4d4d;
+  --color-destructive-hover: #d93636;
+  --color-checked-bg: #2d0a2d;
+  --blur-bg: rgba(248, 248, 248, 0.85);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #000000; /* Czysta czerń */
+    --bg-surface: #121212; /* Bardzo ciemny szary dla kart */
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+
+    /* Nowy Akcent: Neonowy Fiolet/Róż (Dark Mode) */
+    --color-accent: #bc47fb; /* Vibrant Purple */
+    --color-accent-hover: #d682ff;
+    --text-tertiary: #ff4eb8; /* Hot Pink dla detali */
+
+    --color-border: #2a2a2a; /* Subtelne krawędzie w czerni */
+    --color-destructive: #ff4d4d;
+    --color-destructive-hover: #ff6666;
+    --color-checked-bg: #1a0b1a;
+    --blur-bg: rgba(0, 0, 0, 0.85);
+  }
+}
+
+@theme inline {
+  --color-bg-body: var(--bg-page);
+  --color-bg-card: var(--bg-surface);
+  --color-text-main: var(--text-primary);
+  --color-text-dim: var(--text-secondary);
+  --color-brand: var(--color-accent);
+  --color-brand-hover: var(--color-accent-hover);
+  --color-accent-text: var(--text-tertiary);
+  --color-ui-border: var(--color-border);
+  --color-error: var(--color-destructive);
+  --color-error-hover: var(--color-destructive-hover);
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar dopasowany do kolorystyki */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
