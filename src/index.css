@@ -7,7 +7,6 @@
   --text-primary: #0d0d0d;
   --text-secondary: #4a4a4a;
 
-  /* Nowy Akcent: Fioletowo-Różowy (Light Mode) */
   --color-accent: #d43fb8;
   --color-accent-hover: #f062d4;
   --text-tertiary: #9d3088;
@@ -21,17 +20,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-page: #000000; /* Czysta czerń */
-    --bg-surface: #121212; /* Bardzo ciemny szary dla kart */
+    --bg-page: #000000;
+    --bg-surface: #121212;
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
 
-    /* Nowy Akcent: Neonowy Fiolet/Róż (Dark Mode) */
-    --color-accent: #bc47fb; /* Vibrant Purple */
+    --color-accent: #bc47fb;
     --color-accent-hover: #d682ff;
-    --text-tertiary: #ff4eb8; /* Hot Pink dla detali */
+    --text-tertiary: #ff4eb8;
 
-    --color-border: #2a2a2a; /* Subtelne krawędzie w czerni */
+    --color-border: #2a2a2a;
     --color-destructive: #ff4d4d;
     --color-destructive-hover: #ff6666;
     --color-checked-bg: #1a0b1a;
@@ -60,7 +58,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Scrollbar dopasowany do kolorystyki */
+::selection {
+  background: var(--color-checked-bg);
+  color: var(--color-accent);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
