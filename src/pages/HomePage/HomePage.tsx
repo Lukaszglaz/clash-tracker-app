@@ -1,14 +1,9 @@
-import { type FC, useState } from "react";
-import { Navbar } from "../../components/Navbar/Navbar";
+import { type FC } from "react";
 import { FeatureCard } from "../../components/FeatureCard/FeatureCard";
 
 export const HomePage: FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   return (
     <div className="min-h-screen bg-bg-body text-text-main">
-      <Navbar isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
-
       <main className="max-w-5xl mx-auto px-6 py-24 text-center relative overflow-hidden">
         <div className="absolute top-0 -right-20 w-96 h-96 bg-brand/10 blur-[130px] rounded-full -z-10" />
         <div className="absolute bottom-0 -left-20 w-96 h-96 bg-accent-text/5 blur-[130px] rounded-full -z-10" />
