@@ -84,11 +84,11 @@ export const RegisterPage: FC = () => {
             <Link to="/">
               <div className="w-12 h-12 bg-linear-to-br from-brand to-accent-text rounded-2xl shadow-lg shadow-brand/20" />
             </Link>
-            <h2 className="text-3xl font-black italic uppercase text-white tracking-tight">
+            <h2 className="text-3xl font-black italic uppercase  tracking-tight">
               Clash <span className="text-brand">Tracker</span>
             </h2>
           </div>
-          <h2 className="text-3xl font-black italic uppercase text-white tracking-tight">
+          <h2 className="text-3xl font-black italic uppercase  tracking-tight">
             Stwórz <span className="text-brand">Konto</span>
           </h2>
           <p className="text-text-dim mt-2 text-sm uppercase tracking-widest font-bold opacity-60">
@@ -112,7 +112,7 @@ export const RegisterPage: FC = () => {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className={`w-full bg-bg-card border-2 ${fieldErrors.email ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-brand transition-all`}
+              className={`w-full bg-bg-card border-2 ${fieldErrors.email ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all`}
             />
             {fieldErrors.email && (
               <p className="text-error text-[10px] mt-2 ml-2 uppercase font-bold italic tracking-tighter">
@@ -129,7 +129,7 @@ export const RegisterPage: FC = () => {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              className={`w-full bg-bg-card border-2 ${fieldErrors.password ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-brand transition-all`}
+              className={`w-full bg-bg-card border-2 ${fieldErrors.password ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all`}
             />
             {fieldErrors.password && (
               <p className="text-error text-[10px] mt-2 ml-2 uppercase font-bold italic tracking-tighter">
@@ -149,7 +149,7 @@ export const RegisterPage: FC = () => {
                   playerTag: e.target.value.toUpperCase(),
                 })
               }
-              className={`w-full bg-bg-card border-2 ${fieldErrors.playerTag ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-brand transition-all font-mono italic`}
+              className={`w-full bg-bg-card border-2 ${fieldErrors.playerTag ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all font-mono italic`}
             />
             {fieldErrors.playerTag && (
               <p className="text-error text-[10px] mt-2 ml-2 uppercase font-bold italic tracking-tighter">
@@ -175,6 +175,12 @@ export const RegisterPage: FC = () => {
               className="text-brand font-black hover:underline ml-1"
             >
               Zaloguj się
+            </Link>
+          </p>
+          <p className="text-text-dim mt-1.5 text-xs uppercase tracking-widest font-bold opacity-60">
+            Wróć na stronę główną{" "}
+            <Link to="/" className="text-brand font-black hover:underline ml-1">
+              Kliknij tutaj.
             </Link>
           </p>
         </div>

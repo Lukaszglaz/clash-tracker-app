@@ -19,23 +19,23 @@ export const CheckEmailPage: FC = () => {
             <MailCheck className="text-brand w-12 h-12" />
           </div>
 
-          <h2 className="text-4xl font-black uppercase italic text-white mb-4 tracking-tighter">
+          <h2 className="text-4xl font-black uppercase italic  mb-4 tracking-tighter">
             Sprawdź <span className="text-brand">E-mail</span>
           </h2>
 
           <div className="space-y-6 mb-10">
             <p className="text-text-dim leading-relaxed text-sm">
               Wysłaliśmy 6-cyfrowy kod weryfikacyjny na adres: <br />
-              <span className="text-white font-black italic text-base break-all select-all">
+              <span className=" font-black italic text-base break-all select-all">
                 {email}
               </span>
             </p>
 
-            <div className="bg-white/5 border border-white/5 rounded-2xl p-4 flex items-start gap-3 text-left">
+            <div className="bg-brand/5 border border-brand/10 rounded-2xl p-4 flex items-start gap-3 text-left">
               <Info className="text-brand shrink-0" size={18} />
               <p className="text-[11px] text-text-dim leading-tight uppercase font-bold tracking-wider">
                 Kod jest ważny przez{" "}
-                <span className="text-white">24 godziny</span>. Jeśli nie
+                <span className="text-brand">24 godziny</span>. Jeśli nie
                 dotarł, sprawdź folder spam.
               </p>
             </div>
@@ -55,7 +55,7 @@ export const CheckEmailPage: FC = () => {
 
             <button
               onClick={() => navigate("/register")}
-              className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-white uppercase tracking-[0.3em] font-black transition-colors py-2 cursor-pointer opacity-60 hover:opacity-100"
+              className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim  uppercase tracking-[0.3em] font-black transition-colors py-2 cursor-pointer opacity-60 hover:opacity-100"
             >
               <ArrowLeft size={12} />
               Błędny email? Zmień dane
