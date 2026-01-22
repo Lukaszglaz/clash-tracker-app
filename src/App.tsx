@@ -11,35 +11,38 @@ import { VerifyEmailPage } from "./pages/VerifyEmailPage/VerifyEmailPage";
 import { CheckEmailPage } from "./pages/CheckEmailPage/CheckEmailPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage/ResetPasswordPage";
+import { AuthProvider } from "./context/AuthContext";
 
 export const App: FC = () => {
   return (
     <>
-      <ToastContainer theme="dark" position="top-right" />
+      <AuthProvider>
+        <ToastContainer theme="dark" position="top-right" />
 
-      <Routes>
-        <Route
-          element={
-            <Layout>
-              <Outlet />
-            </Layout>
-          }
-        >
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/check-email" element={<CheckEmailPage />} />
-          <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Routes>
           <Route
-            path="/dashboard"
-            element={<div className="p-20 text-text-main">Dashboard</div>}
-          />
-        </Route>
+            element={
+              <Layout>
+                <Outlet />
+              </Layout>
+            }
+          >
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/check-email" element={<CheckEmailPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route
+              path="/dashboard"
+              element={<div className="p-20 text-text-main">Dashboard</div>}
+            />
+          </Route>
 
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AuthProvider>
     </>
   );
 };
