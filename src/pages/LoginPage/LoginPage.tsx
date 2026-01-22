@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/axios";
 import { LogIn, AlertCircle, Lock, Mail } from "lucide-react";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export const LoginPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ export const LoginPage: FC = () => {
     try {
       const response = await api.post("/auth/login", { email, password });
 
-      localStorage.setItem("token", response.data.access_token);
+      login(response.data.access_token);
 
       toast.success("Zalogowano pomyślnie!", {
         icon: <LogIn size={20} className="text-brand" />,
@@ -54,11 +56,11 @@ export const LoginPage: FC = () => {
             <Link to="/">
               <div className="w-12 h-12 bg-linear-to-br from-brand to-accent-text rounded-2xl shadow-lg shadow-brand/20 hover:scale-105 transition-transform" />
             </Link>
-            <h2 className="text-3xl font-black italic uppercase  tracking-tight">
+            <h2 className="text-3xl font-black italic uppercase tracking-tight text-text-main">
               Clash <span className="text-brand">Tracker</span>
             </h2>
           </div>
-          <h2 className="text-3xl font-black italic uppercase  tracking-tight">
+          <h2 className="text-3xl font-black italic uppercase tracking-tight text-text-main">
             Witaj <span className="text-brand">ponownie</span>
           </h2>
           <p className="text-text-dim mt-2 text-sm uppercase tracking-widest font-bold opacity-60">
@@ -74,6 +76,7 @@ export const LoginPage: FC = () => {
                 {error}
               </div>
             )}
+
             <div className="group">
               <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-text-dim mb-2 ml-1 group-focus-within:text-brand transition-colors">
                 Email
@@ -84,7 +87,7 @@ export const LoginPage: FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12  focus:outline-none focus:border-brand/50 transition-all"
+                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12 focus:outline-none focus:border-brand/50 transition-all text-text-main"
                   placeholder="example@email.com"
                 />
                 <Mail
@@ -93,9 +96,10 @@ export const LoginPage: FC = () => {
                 />
               </div>
             </div>
+
             <div className="group">
               <div className="flex justify-between items-center mb-2 ml-1">
-                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold  group-focus-within:text-brand transition-colors">
+                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-text-dim group-focus-within:text-brand transition-colors">
                   Hasło
                 </label>
                 <Link
@@ -111,7 +115,7 @@ export const LoginPage: FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12  focus:outline-none focus:border-brand/50 transition-all"
+                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12 focus:outline-none focus:border-brand/50 transition-all text-text-main"
                   placeholder="••••••••"
                 />
                 <Lock
