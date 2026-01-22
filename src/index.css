@@ -15,7 +15,6 @@
   --color-destructive: #ff4d4d;
   --color-destructive-hover: #d93636;
   --color-checked-bg: #2d0a2d;
-  --blur-bg: rgba(248, 248, 248, 0.85);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,10 +29,7 @@
     --text-tertiary: #ff4eb8;
 
     --color-border: #2a2a2a;
-    --color-destructive: #ff4d4d;
-    --color-destructive-hover: #ff6666;
     --color-checked-bg: #1a0b1a;
-    --blur-bg: rgba(0, 0, 0, 0.85);
   }
 }
 
@@ -56,11 +52,9 @@ body {
   font-family: "Poppins", sans-serif;
   margin: 0;
   -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: var(--color-checked-bg);
-  color: var(--color-accent);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 ::-webkit-scrollbar {
@@ -75,4 +69,9 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent);
+}
+
+::selection {
+  background: var(--color-checked-bg);
+  color: var(--color-accent);
 }

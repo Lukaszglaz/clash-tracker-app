@@ -54,11 +54,11 @@ export const LoginPage: FC = () => {
             <Link to="/">
               <div className="w-12 h-12 bg-linear-to-br from-brand to-accent-text rounded-2xl shadow-lg shadow-brand/20 hover:scale-105 transition-transform" />
             </Link>
-            <h2 className="text-3xl font-black italic uppercase text-white tracking-tight">
+            <h2 className="text-3xl font-black italic uppercase  tracking-tight">
               Clash <span className="text-brand">Tracker</span>
             </h2>
           </div>
-          <h2 className="text-3xl font-black italic uppercase text-white tracking-tight">
+          <h2 className="text-3xl font-black italic uppercase  tracking-tight">
             Witaj <span className="text-brand">ponownie</span>
           </h2>
           <p className="text-text-dim mt-2 text-sm uppercase tracking-widest font-bold opacity-60">
@@ -84,8 +84,8 @@ export const LoginPage: FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12 text-white focus:outline-none focus:border-brand/50 transition-all"
-                  placeholder="twoj@email.com"
+                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12  focus:outline-none focus:border-brand/50 transition-all"
+                  placeholder="example@email.com"
                 />
                 <Mail
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-brand transition-colors"
@@ -95,7 +95,7 @@ export const LoginPage: FC = () => {
             </div>
             <div className="group">
               <div className="flex justify-between items-center mb-2 ml-1">
-                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-text-dim group-focus-within:text-brand transition-colors">
+                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold  group-focus-within:text-brand transition-colors">
                   Hasło
                 </label>
                 <Link
@@ -111,7 +111,7 @@ export const LoginPage: FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12 text-white focus:outline-none focus:border-brand/50 transition-all"
+                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12  focus:outline-none focus:border-brand/50 transition-all"
                   placeholder="••••••••"
                 />
                 <Lock
@@ -138,6 +138,15 @@ export const LoginPage: FC = () => {
                 className="text-brand font-black hover:underline ml-1"
               >
                 Stwórz je tutaj
+              </Link>
+            </p>
+            <p className="text-text-dim mt-1.5 text-xs uppercase tracking-widest font-bold opacity-60">
+              Wróć na stronę główną{" "}
+              <Link
+                to="/"
+                className="text-brand font-black hover:underline ml-1"
+              >
+                Kliknij tutaj.
               </Link>
             </p>
           </div>

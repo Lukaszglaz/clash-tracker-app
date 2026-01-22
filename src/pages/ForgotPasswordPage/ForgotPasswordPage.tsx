@@ -19,9 +19,9 @@ export const ForgotPasswordPage: FC = () => {
       toast.success("Kod resetujący został wysłany!", {
         style: {
           borderRadius: "16px",
-          background: "#161127",
-          border: "1px solid rgba(188, 71, 251, 0.2)",
-          color: "#fff",
+          background: "var(--bg-surface)",
+          border: "1px solid var(--color-border)",
+          color: "var(--text-primary)",
         },
       });
 
@@ -46,23 +46,23 @@ export const ForgotPasswordPage: FC = () => {
             <Mail className="text-brand w-10 h-10" />
           </div>
 
-          <h2 className="text-4xl font-black uppercase italic text-white mb-4 tracking-tighter">
+          <h2 className="text-4xl font-black uppercase italic text-text-main mb-4 tracking-tighter">
             Reset <span className="text-brand">Hasła</span>
           </h2>
 
           <div className="space-y-6 mb-10">
             <p className="text-text-dim leading-relaxed text-sm">
               Podaj swój adres e-mail, aby otrzymać <br />
-              <span className="text-white font-black italic">
+              <span className="text-text-main font-black italic">
                 6-cyfrowy kod weryfikacyjny.
               </span>
             </p>
 
-            <div className="bg-white/5 border border-white/5 rounded-2xl p-4 flex items-start gap-3 text-left">
+            <div className="bg-brand/5 border border-brand/10 rounded-2xl p-4 flex items-start gap-3 text-left">
               <Info className="text-brand shrink-0" size={18} />
               <p className="text-[11px] text-text-dim leading-tight uppercase font-bold tracking-wider">
                 Kod resetujący jest aktywny przez{" "}
-                <span className="text-white">60 minut</span> od momentu
+                <span className="text-brand">60 minut</span> od momentu
                 wysłania.
               </p>
             </div>
@@ -79,7 +79,7 @@ export const ForgotPasswordPage: FC = () => {
                 placeholder="ADRES E-MAIL"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-5 text-white focus:outline-none focus:border-brand transition-all text-sm font-bold tracking-widest placeholder:text-white/5"
+                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-5 text-text-main focus:outline-none focus:border-brand transition-all text-sm font-bold tracking-widest placeholder:opacity-20"
               />
             </div>
 
@@ -104,7 +104,7 @@ export const ForgotPasswordPage: FC = () => {
 
           <button
             onClick={() => navigate("/login")}
-            className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-white uppercase tracking-[0.3em] font-black transition-colors mt-10 py-2 cursor-pointer opacity-60 hover:opacity-100"
+            className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-10 py-2 cursor-pointer opacity-60 hover:opacity-100"
           >
             <ArrowLeft size={12} /> Wróć do logowania
           </button>

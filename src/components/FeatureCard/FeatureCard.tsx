@@ -15,7 +15,7 @@ export const FeatureCard: FC<FeatureCardProps> = ({
     <div className="text-brand text-2xl mb-4 italic font-black group-hover:scale-110 transition-transform">
       {number}
     </div>
-    <h3 className="text-lg font-bold mb-2 uppercase text-white">{title}</h3>
+    <h3 className="text-lg font-bold mb-2 uppercase ">{title}</h3>
     <p className="text-text-dim text-sm leading-relaxed">{description}</p>
   </div>
 );

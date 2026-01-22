@@ -10,7 +10,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../../api/axios";
 import { toast } from "react-toastify";
-import { LockKeyhole, ArrowLeft, RefreshCw, CheckCircle2 } from "lucide-react";
+import { LockKeyhole, ArrowLeft, RefreshCw } from "lucide-react";
 
 interface LocationState {
   email?: string;
@@ -25,9 +25,7 @@ export const ResetPasswordPage: FC = () => {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const state = location.state as LocationState;
-  const email = state?.email || "";
+  const email = (location.state as LocationState)?.email || "";
 
   useEffect(() => {
     if (!email) {
@@ -45,9 +43,8 @@ export const ResetPasswordPage: FC = () => {
   };
 
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !code[index] && index > 0) {
+    if (e.key === "Backspace" && !code[index] && index > 0)
       inputsRef.current[index - 1]?.focus();
-    }
   };
 
   const handlePaste = (e: ClipboardEvent) => {
@@ -62,14 +59,11 @@ export const ResetPasswordPage: FC = () => {
       if (index < 6) newCode[index] = char;
     });
     setCode(newCode);
-    const nextIndex = pastedData.length < 6 ? pastedData.length : 5;
-    inputsRef.current[nextIndex]?.focus();
+    inputsRef.current[pastedData.length < 6 ? pastedData.length : 5]?.focus();
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-
     setIsLoading(true);
     setError(null);
     try {
@@ -79,44 +73,45 @@ export const ResetPasswordPage: FC = () => {
         newPass,
       });
       toast.success("Hasło zmienione!", {
-        icon: <CheckCircle2 size={20} className="text-brand" />,
-        style: { borderRadius: "16px", background: "#161127", color: "#fff" },
+        style: {
+          borderRadius: "16px",
+          background: "var(--bg-surface)",
+          color: "var(--text-primary)",
+          border: "1px solid var(--color-border)",
+        },
       });
       navigate("/login");
     } catch (err: any) {
-      const errMsg = err.response?.data?.message || "Błąd resetowania.";
-      setError(errMsg);
-      toast.error(errMsg);
+      setError(err.response?.data?.message || "Błąd resetowania.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-body px-6 relative overflow-hidden py-4">
+    <div className="min-h-screen flex items-center justify-center bg-bg-body px-6 relative overflow-hidden transition-colors duration-300">
       <div className="absolute top-1/4 -right-20 w-80 h-80 bg-brand/10 blur-[120px] rounded-full" />
       <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-accent-text/5 blur-[120px] rounded-full" />
 
       <div className="w-full max-w-md animate-in fade-in zoom-in duration-500 relative z-10">
         <div className="bg-bg-card border border-ui-border rounded-4xl p-6 md:p-8 text-center shadow-2xl backdrop-blur-md">
-          <div className="w-16 h-16 bg-linear-to-br from-brand/30 to-brand/5 rounded-2xl flex items-center justify-center mx-auto mb-4 -rotate-2 border border-brand/20 shadow-xl shadow-brand/10">
+          <div className="w-16 h-16 bg-linear-to-br from-brand/30 to-brand/5 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-brand/20 shadow-xl">
             <LockKeyhole className="text-brand w-8 h-8" />
           </div>
 
-          <h2 className="text-2xl font-black uppercase italic text-white mb-2 tracking-tighter">
+          <h2 className="text-2xl font-black uppercase italic text-text-main mb-2 tracking-tighter">
             Nowe <span className="text-brand">Hasło</span>
           </h2>
-
-          <p className="text-text-dim text-[11px] mb-6 leading-relaxed italic">
-            Dla:{" "}
-            <span className="text-white font-bold opacity-90 break-all">
+          <p className="text-text-dim leading-relaxed text-sm mb-5">
+            Wysłaliśmy 6-cyfrowy kod weryfikacyjny na adres: <br />
+            <span className=" font-black italic text-base break-all select-all">
               {email}
             </span>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5 text-left">
             {error && (
-              <div className="p-3 rounded-xl bg-error/10 border border-error/20 text-error text-[10px] font-bold italic uppercase tracking-wider text-center animate-shake">
+              <div className="p-3 rounded-xl bg-error/10 border border-error/20 text-error text-[10px] font-bold uppercase text-center">
                 {error}
               </div>
             )}
@@ -140,8 +135,7 @@ export const ResetPasswordPage: FC = () => {
                     value={digit}
                     onChange={(e) => handleChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className={`w-full h-14 bg-bg-body border-2 ${digit ? "border-brand shadow-lg shadow-brand/10" : "border-ui-border"} rounded-xl text-center text-2xl font-black text-white focus:outline-none focus:border-brand transition-all`}
-                    placeholder="0"
+                    className={`w-full h-14 bg-bg-body border-2 ${digit ? "border-brand" : "border-ui-border"} rounded-xl text-center text-2xl font-black text-text-main focus:outline-none focus:border-brand transition-all`}
                   />
                 ))}
               </div>
@@ -157,7 +151,7 @@ export const ResetPasswordPage: FC = () => {
                 minLength={8}
                 value={newPass}
                 onChange={(e) => setNewPass(e.target.value)}
-                className="w-full bg-bg-body border-2 border-ui-border rounded-xl px-5 py-3.5 text-white focus:outline-none focus:border-brand/50 transition-all text-sm font-bold placeholder:opacity-10"
+                className="w-full bg-bg-body border-2 border-ui-border rounded-xl px-5 py-3.5 text-text-main focus:outline-none focus:border-brand/50 transition-all font-bold placeholder:text-text-dim/20"
                 placeholder="••••••••"
               />
             </div>
@@ -167,10 +161,10 @@ export const ResetPasswordPage: FC = () => {
               disabled={
                 isLoading || code.some((d) => d === "") || newPass.length < 8
               }
-              className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-brand/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-30 flex items-center justify-center gap-3 text-sm cursor-pointer"
+              className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl transition-all cursor-pointer"
             >
               {isLoading ? (
-                <RefreshCw className="animate-spin" size={18} />
+                <RefreshCw className="animate-spin mx-auto" size={18} />
               ) : (
                 "Zatwierdź zmiany"
               )}
@@ -179,20 +173,10 @@ export const ResetPasswordPage: FC = () => {
 
           <button
             onClick={() => navigate("/login")}
-            className="flex items-center justify-center gap-2 w-full text-[9px] text-text-dim hover:text-white uppercase tracking-[0.3em] font-black transition-colors mt-6 py-1 cursor-pointer opacity-60"
+            className="flex items-center justify-center gap-2 w-full text-[9px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-6 py-1 opacity-60"
           >
             <ArrowLeft size={10} /> Wróć do logowania
           </button>
-        </div>
-
-        <div className="mt-8 text-center space-y-3">
-          <p className="text-[10px] text-text-dim/40 uppercase tracking-[0.15em] leading-relaxed">
-            Masz problem z odzyskaniem dostępu? <br />
-            Napisz:{" "}
-            <span className="text-text-dim/80 font-bold ml-1">
-              kontakt@glazlukasz.pl
-            </span>
-          </p>
         </div>
       </div>
     </div>

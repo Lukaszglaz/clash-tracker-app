@@ -104,13 +104,13 @@ export const VerifyEmailPage: FC = () => {
             <Lock className="text-brand w-10 h-10" />
           </div>
 
-          <h2 className="text-3xl font-black uppercase italic text-white mb-3 tracking-tighter">
+          <h2 className="text-3xl font-black uppercase italic  mb-3 tracking-tighter">
             Bezpieczna <span className="text-brand">Weryfikacja</span>
           </h2>
 
           <p className="text-text-dim text-sm mb-10 leading-relaxed">
             Wprowadź 6-cyfrowy kod wysłany na: <br />
-            <span className="text-white font-bold opacity-90 break-all">
+            <span className="text-text-main font-bold opacity-90 break-all">
               {email || "Twój e-mail"}
             </span>
           </p>
@@ -137,7 +137,7 @@ export const VerifyEmailPage: FC = () => {
                     digit
                       ? "border-brand shadow-lg shadow-brand/10"
                       : "border-ui-border"
-                  } rounded-xl text-center text-3xl font-black text-white focus:outline-none focus:border-brand transition-all duration-200 placeholder:text-white/5`}
+                  } rounded-xl text-center text-3xl font-black text-text-dim focus:outline-none focus:border-brand transition-all duration-200 placeholder:text-white/5`}
                   placeholder="0"
                 />
               ))}
@@ -158,7 +158,7 @@ export const VerifyEmailPage: FC = () => {
 
           <button
             onClick={() => navigate("/check-email", { state: { email } })}
-            className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-white uppercase tracking-[0.3em] font-black transition-colors mt-10 py-2 cursor-pointer opacity-60"
+            className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-10 py-2 cursor-pointer opacity-60"
           >
             <ArrowLeft size={12} />
             Wróć do instrukcji

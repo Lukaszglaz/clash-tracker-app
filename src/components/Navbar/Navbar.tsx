@@ -12,7 +12,7 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-3 group cursor-pointer">
           <div className="w-10 h-10 bg-linear-to-br from-brand to-accent-text rounded-xl shadow-[0_0_20px_rgba(188,71,251,0.3)] group-hover:rotate-6 transition-transform" />
-          <h1 className="text-2xl font-black tracking-tighter uppercase italic text-white">
+          <h1 className="text-2xl font-black tracking-tighter uppercase italic ">
             CLASH<span className="text-brand">TRK</span>
           </h1>
         </Link>
