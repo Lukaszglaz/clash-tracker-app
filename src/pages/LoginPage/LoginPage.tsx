@@ -3,13 +3,22 @@ import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/axios";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
-import { Mail, Lock, ArrowLeft, AlertCircle, LogIn } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  ArrowLeft,
+  AlertCircle,
+  LogIn,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -82,7 +91,7 @@ export const LoginPage: FC = () => {
               </div>
               <input
                 type="email"
-                placeholder="ADRES EMAIL"
+                placeholder="Adres e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -95,13 +104,21 @@ export const LoginPage: FC = () => {
                 <Lock size={18} />
               </div>
               <input
-                type="password"
-                placeholder="HASŁO"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Hasło"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full bg-bg-body border-2 border-ui-border rounded-2xl pl-14 pr-5 py-4 text-sm font-bold text-text-main focus:outline-none focus:border-brand transition-all placeholder:text-text-dim/30"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
 
             <div className="flex justify-end px-2">
