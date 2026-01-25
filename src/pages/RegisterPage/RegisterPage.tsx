@@ -5,7 +5,6 @@ import { registerSchema } from "../../schemas/register.schema";
 import { checkValidation } from "../../schemas";
 import { toast } from "react-toastify";
 import { AlertCircle, Check, Eye, EyeOff } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
 
 export const RegisterPage: FC = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +26,6 @@ export const RegisterPage: FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -70,7 +68,6 @@ export const RegisterPage: FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // TOAST: Błąd zgody
     if (!formData.termsAccepted) {
       setShowConsentError(true);
       toast.error("Musisz zaakceptować regulamin!");
@@ -97,24 +94,30 @@ export const RegisterPage: FC = () => {
       });
       setFieldErrors(errorMap);
       setIsLoading(false);
-      // TOAST: Opcjonalnie informacja o błędach pól
       toast.warning("Popraw błędy w formularzu");
       return;
     }
 
-    try {
-      const response = await api.post("/auth/register", dataToValidate);
+    const { confirmPassword, ...dataToSend } = dataToValidate;
 
-      if (response.data.access_token) {
-        login(response.data.access_token, response.data.user);
-        // TOAST: Sukces
-        toast.success("Konto utworzone pomyślnie!");
-        navigate("/verify-email", { replace: true });
-      }
+    try {
+      await api.post("/auth/register", dataToSend);
+
+      toast.success(
+        "Konto utworzone! Sprawdź swoją skrzynkę e-mail i zaloguj się, aby aktywować dostęp do panelu.",
+        {
+          autoClose: 8000,
+          icon: <span>*</span>,
+        },
+      );
+
+      navigate("/verify-email", {
+        replace: true,
+        state: { email: dataToSend.email },
+      });
     } catch (err: any) {
       const errMsg = err.response?.data?.message || "Błąd rejestracji.";
       setError(errMsg);
-      // TOAST: Błąd serwera
       toast.error(errMsg);
     } finally {
       setIsLoading(false);
@@ -207,22 +210,41 @@ export const RegisterPage: FC = () => {
             ))}
           </div>
 
-          <div className="relative">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              placeholder="Powtórz hasło"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={`w-full bg-bg-card border-2 ${formData.confirmPassword && !passwordsMatch ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
-            >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+          <div className="space-y-2">
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Powtórz hasło"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={`w-full bg-bg-card border-2 ${
+                  (formData.confirmPassword && !passwordsMatch) ||
+                  fieldErrors.confirmPassword
+                    ? "border-error/50"
+                    : "border-ui-border"
+                } rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
+            {formData.confirmPassword && !passwordsMatch && (
+              <p className="text-[10px] text-error font-bold uppercase tracking-wider px-2 animate-in fade-in slide-in-from-top-1">
+                Hasła nie są identyczne
+              </p>
+            )}
+
+            {fieldErrors.confirmPassword && !formData.confirmPassword && (
+              <p className="text-[10px] text-error font-bold uppercase tracking-wider px-2">
+                {fieldErrors.confirmPassword}
+              </p>
+            )}
           </div>
 
           <input
@@ -235,7 +257,6 @@ export const RegisterPage: FC = () => {
           />
 
           <div className="space-y-4 px-2">
-            {/* Custom Checkbox: Regulamin */}
             <label className="flex items-center gap-3 cursor-pointer group">
               <div className="relative flex items-center justify-center">
                 <input
@@ -267,7 +288,6 @@ export const RegisterPage: FC = () => {
               </span>
             </label>
 
-            {/* Custom Checkbox: Marketing */}
             <label className="flex items-center gap-3 cursor-pointer group">
               <div className="relative flex items-center justify-center">
                 <input
