@@ -6,10 +6,11 @@ import {
   type KeyboardEvent,
   type ClipboardEvent,
 } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { toast } from "react-toastify";
 import { ShieldCheck, ArrowLeft, RefreshCw, Lock } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 export const VerifyEmailPage: FC = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -17,10 +18,8 @@ export const VerifyEmailPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
-
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state?.email;
+  const { user, login } = useAuth();
 
   const handleChange = (index: number, value: string) => {
     if (!/^[0-9A-Z]*$/.test(value)) return;
@@ -62,8 +61,8 @@ export const VerifyEmailPage: FC = () => {
     e.preventDefault();
     const finalCode = code.join("");
 
-    if (!email) {
-      toast.error("Błąd sesji. Wróć do rejestracji.");
+    if (!user?.email) {
+      toast.error("Błąd sesji. Zaloguj się ponownie.");
       return;
     }
 
@@ -71,7 +70,12 @@ export const VerifyEmailPage: FC = () => {
     setError(null);
 
     try {
-      await api.post("/auth/verify", { email, code: finalCode });
+      await api.post("/auth/verify", { email: user.email, code: finalCode });
+
+      const token = localStorage.getItem("token");
+      if (token && user) {
+        login(token, { ...user, isVerified: true });
+      }
 
       toast.success("Konto zweryfikowane!", {
         icon: <ShieldCheck size={20} className="text-brand" />,
@@ -83,7 +87,7 @@ export const VerifyEmailPage: FC = () => {
         },
       });
 
-      navigate("/login");
+      navigate("/dashboard", { replace: true });
     } catch (err: any) {
       const errMsg = err.response?.data?.message || "Nieprawidłowy kod.";
       setError(errMsg);
@@ -104,14 +108,14 @@ export const VerifyEmailPage: FC = () => {
             <Lock className="text-brand w-10 h-10" />
           </div>
 
-          <h2 className="text-3xl font-black uppercase italic  mb-3 tracking-tighter">
+          <h2 className="text-3xl font-black uppercase italic mb-3 tracking-tighter text-text-main">
             Bezpieczna <span className="text-brand">Weryfikacja</span>
           </h2>
 
           <p className="text-text-dim text-sm mb-10 leading-relaxed">
             Wprowadź 6-cyfrowy kod wysłany na: <br />
             <span className="text-text-main font-bold opacity-90 break-all">
-              {email || "Twój e-mail"}
+              {user?.email || "Twój e-mail"}
             </span>
           </p>
 
@@ -157,28 +161,12 @@ export const VerifyEmailPage: FC = () => {
           </form>
 
           <button
-            onClick={() => navigate("/check-email", { state: { email } })}
+            onClick={() => navigate("/")}
             className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-10 py-2 cursor-pointer opacity-60"
           >
             <ArrowLeft size={12} />
-            Wróć do instrukcji
+            Wróć do strony głównej
           </button>
-        </div>
-        <div className="mt-10 space-y-4 text-center">
-          <div className="inline-block px-4 py-1 rounded-full bg-white/5 border border-white/5">
-            <p className="text-[10px] text-text-dim/60 uppercase tracking-[0.2em] font-bold">
-              Nie widzę wiadomości?{" "}
-              <span className="text-brand/80">Sprawdź Spam</span>
-            </p>
-          </div>
-
-          <p className="text-[10px] text-text-dim/40 uppercase tracking-[0.15em] leading-relaxed">
-            Masz problem z kontem? <br />
-            Napisz do nas:{" "}
-            <span className="text-text-dim/80 font-bold ml-1 hover:text-brand transition-colors cursor-pointer">
-              kontakt@glazlukasz.pl
-            </span>
-          </p>
         </div>
       </div>
     </div>
