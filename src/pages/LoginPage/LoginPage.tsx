@@ -1,9 +1,9 @@
 import { useState, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/axios";
-import { LogIn, AlertCircle, Lock, Mail } from "lucide-react";
-import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import { Mail, Lock, ArrowLeft, AlertCircle, LogIn } from "lucide-react";
 
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
@@ -21,23 +21,20 @@ export const LoginPage: FC = () => {
 
     try {
       const response = await api.post("/auth/login", { email, password });
+      const { access_token, user } = response.data;
 
-      login(response.data.access_token);
+      login(access_token, user);
 
-      toast.success("Zalogowano pomyślnie!", {
-        icon: <LogIn size={20} className="text-brand" />,
-        style: {
-          borderRadius: "16px",
-          background: "#161127",
-          border: "1px solid rgba(188, 71, 251, 0.2)",
-          color: "#fff",
-        },
-      });
+      toast.success("Witaj z powrotem!");
 
-      navigate("/dashboard");
+      if (!user.isVerified) {
+        navigate("/verify-email", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (err: any) {
       const errMsg =
-        err.response?.data?.message || "Nieprawidłowe dane logowania.";
+        err.response?.data?.message || "Błąd logowania. Spróbuj ponownie.";
       setError(errMsg);
       toast.error(errMsg);
     } finally {
@@ -46,120 +43,115 @@ export const LoginPage: FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-body px-6 relative overflow-hidden">
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand/10 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent-text/5 blur-[130px] rounded-full pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center bg-bg-body px-6 py-12 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent-text/5 blur-[120px] rounded-full" />
+      </div>
 
-      <div className="w-full max-w-md animate-in fade-in zoom-in duration-500 relative z-10">
+      <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-10">
         <div className="text-center mb-10">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <Link to="/">
-              <div className="w-12 h-12 bg-linear-to-br from-brand to-accent-text rounded-2xl shadow-lg shadow-brand/20 hover:scale-105 transition-transform" />
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <Link to="/" className="hover:scale-105 transition-transform">
+              <div className="w-12 h-12 bg-linear-to-br from-brand to-accent-text rounded-2xl shadow-lg shadow-brand/20" />
             </Link>
             <h2 className="text-3xl font-black italic uppercase tracking-tight text-text-main">
               Clash <span className="text-brand">Tracker</span>
             </h2>
           </div>
-          <h2 className="text-3xl font-black italic uppercase tracking-tight text-text-main">
-            Witaj <span className="text-brand">ponownie</span>
-          </h2>
-          <p className="text-text-dim mt-2 text-sm uppercase tracking-widest font-bold opacity-60">
-            Zaloguj się do swojego profilu
+          <h1 className="text-2xl font-black italic uppercase text-text-main/90">
+            Witaj Ponownie
+          </h1>
+          <p className="text-text-dim text-xs uppercase tracking-[0.2em] font-bold mt-2 opacity-60">
+            Zaloguj się do swojego konta
           </p>
         </div>
 
-        <div className="bg-bg-card border border-ui-border rounded-[2.5rem] p-8 md:p-10 shadow-2xl backdrop-blur-md">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-bg-card border border-ui-border rounded-[2.5rem] p-8 md:p-10 shadow-2xl backdrop-blur-sm">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-error/10 border border-error/20 text-error text-[11px] font-bold italic uppercase tracking-wider animate-shake">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-error/10 border border-error/20 text-error text-[11px] font-bold uppercase tracking-wider italic animate-shake">
                 <AlertCircle size={16} />
                 {error}
               </div>
             )}
 
-            <div className="group">
-              <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-text-dim mb-2 ml-1 group-focus-within:text-brand transition-colors">
-                Email
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12 focus:outline-none focus:border-brand/50 transition-all text-text-main"
-                  placeholder="example@email.com"
-                />
-                <Mail
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-brand transition-colors"
-                  size={18}
-                />
+            <div className="relative group">
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-brand transition-colors">
+                <Mail size={18} />
               </div>
+              <input
+                type="email"
+                placeholder="ADRES EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl pl-14 pr-5 py-4 text-sm font-bold text-text-main focus:outline-none focus:border-brand transition-all placeholder:text-text-dim/30"
+              />
             </div>
 
-            <div className="group">
-              <div className="flex justify-between items-center mb-2 ml-1">
-                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-text-dim group-focus-within:text-brand transition-colors">
-                  Hasło
-                </label>
-                <Link
-                  to="/forgot-password"
-                  className="text-[10px] uppercase tracking-widest font-black text-brand/60 hover:text-brand transition-colors"
-                >
-                  Zapomniałeś hasła?
-                </Link>
+            <div className="relative group">
+              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-brand transition-colors">
+                <Lock size={18} />
               </div>
-              <div className="relative">
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-4 pl-12 focus:outline-none focus:border-brand/50 transition-all text-text-main"
-                  placeholder="••••••••"
-                />
-                <Lock
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-brand transition-colors"
-                  size={18}
-                />
-              </div>
+              <input
+                type="password"
+                placeholder="HASŁO"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl pl-14 pr-5 py-4 text-sm font-bold text-text-main focus:outline-none focus:border-brand transition-all placeholder:text-text-dim/30"
+              />
+            </div>
+
+            <div className="flex justify-end px-2">
+              <Link
+                to="/forgot-password"
+                className="text-[10px] uppercase font-black text-brand/60 hover:text-brand transition-colors tracking-widest"
+              >
+                Zapomniałeś hasła?
+              </Link>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-5 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-brand/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-3"
+              className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-brand/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer"
             >
-              {isLoading ? "Autoryzacja..." : "Zaloguj się"}
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  <LogIn size={18} />
+                  <span>Zaloguj się</span>
+                </>
+              )}
             </button>
           </form>
 
-          <div className="mt-8 text-center pt-6 border-t border-white/5">
-            <p className="text-text-dim text-xs uppercase tracking-widest font-bold opacity-60">
-              Nie masz konta?{" "}
+          <div className="mt-8 pt-8 border-t border-ui-border/50 text-center">
+            <p className="text-text-dim text-[10px] uppercase tracking-widest font-bold opacity-60">
+              Nie masz jeszcze konta?
               <Link
                 to="/register"
-                className="text-brand font-black hover:underline ml-1"
+                className="text-brand font-black ml-2 hover:underline"
               >
-                Stwórz je tutaj
-              </Link>
-            </p>
-            <p className="text-text-dim mt-1.5 text-xs uppercase tracking-widest font-bold opacity-60">
-              Wróć na stronę główną{" "}
-              <Link
-                to="/"
-                className="text-brand font-black hover:underline ml-1"
-              >
-                Kliknij tutaj.
+                Zarejestruj się
               </Link>
             </p>
           </div>
         </div>
 
-        <p className="text-center mt-10 text-[10px] text-text-dim/30 uppercase tracking-[0.2em]">
-          Masz problem?{" "}
-          <span className="text-text-dim/60">kontakt@glazlukasz.pl</span>
-        </p>
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-8 py-2 cursor-pointer opacity-40 group"
+        >
+          <ArrowLeft
+            size={12}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
+          Powrót do strony głównej
+        </button>
       </div>
     </div>
   );
