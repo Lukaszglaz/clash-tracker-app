@@ -4,25 +4,79 @@ import { api } from "../../api/axios";
 import { registerSchema } from "../../schemas/register.schema";
 import { checkValidation } from "../../schemas";
 import { toast } from "react-toastify";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Check, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 export const RegisterPage: FC = () => {
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
-    password: "",
     playerTag: "",
+    password: "",
+    confirmPassword: "",
+    marketingConsent: false,
+    termsAccepted: false,
   });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+  const [showConsentError, setShowConsentError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+
+    if (name === "termsAccepted" && checked) {
+      setShowConsentError(false);
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : name === "playerTag"
+            ? value.toUpperCase()
+            : value,
+    }));
+  };
+
+  const passwordRequirements = [
+    { id: 1, label: "Minimum 8 znaków", met: formData.password.length >= 8 },
+    { id: 2, label: "Mała litera (a-z)", met: /[a-z]/.test(formData.password) },
+    {
+      id: 3,
+      label: "Wielka litera (A-Z)",
+      met: /[A-Z]/.test(formData.password),
+    },
+    { id: 4, label: "Cyfra (0-9)", met: /[0-9]/.test(formData.password) },
+    {
+      id: 5,
+      label: "Znak specjalny",
+      met: /[!@#$%^&*]/.test(formData.password),
+    },
+  ];
+
+  const passwordsMatch =
+    formData.password === formData.confirmPassword &&
+    formData.confirmPassword !== "";
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // TOAST: Błąd zgody
+    if (!formData.termsAccepted) {
+      setShowConsentError(true);
+      toast.error("Musisz zaakceptować regulamin!");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     setFieldErrors({});
@@ -43,6 +97,8 @@ export const RegisterPage: FC = () => {
       });
       setFieldErrors(errorMap);
       setIsLoading(false);
+      // TOAST: Opcjonalnie informacja o błędach pól
+      toast.warning("Popraw błędy w formularzu");
       return;
     }
 
@@ -51,12 +107,14 @@ export const RegisterPage: FC = () => {
 
       if (response.data.access_token) {
         login(response.data.access_token, response.data.user);
+        // TOAST: Sukces
         toast.success("Konto utworzone pomyślnie!");
         navigate("/verify-email", { replace: true });
       }
     } catch (err: any) {
       const errMsg = err.response?.data?.message || "Błąd rejestracji.";
       setError(errMsg);
+      // TOAST: Błąd serwera
       toast.error(errMsg);
     } finally {
       setIsLoading(false);
@@ -88,58 +146,177 @@ export const RegisterPage: FC = () => {
             </div>
           )}
 
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className={`w-full bg-bg-card border-2 ${fieldErrors.email ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all`}
-            />
-            {fieldErrors.email && (
-              <p className="text-error text-[10px] mt-1 ml-2 uppercase font-bold">
-                {fieldErrors.email}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <input
-              type="password"
-              placeholder="Hasło"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className={`w-full bg-bg-card border-2 ${fieldErrors.password ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all`}
-            />
-            {fieldErrors.password && (
-              <p className="text-error text-[10px] mt-1 ml-2 uppercase font-bold">
-                {fieldErrors.password}
-              </p>
-            )}
-          </div>
-
-          <div>
+          <div className="grid grid-cols-2 gap-4">
             <input
               type="text"
-              placeholder="Player Tag (np. #P8L2V)"
-              value={formData.playerTag}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  playerTag: e.target.value.toUpperCase(),
-                })
-              }
-              className={`w-full bg-bg-card border-2 ${fieldErrors.playerTag ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all font-mono italic`}
+              name="firstName"
+              placeholder="Imię"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="w-full bg-bg-card border-2 border-ui-border rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all"
             />
-            {fieldErrors.playerTag && (
-              <p className="text-error text-[10px] mt-1 ml-2 uppercase font-bold">
-                {fieldErrors.playerTag}
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Nazwisko"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="w-full bg-bg-card border-2 border-ui-border rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all"
+            />
+          </div>
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className={`w-full bg-bg-card border-2 ${fieldErrors.email ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all`}
+          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Hasło"
+              value={formData.password}
+              onChange={handleChange}
+              className={`w-full bg-bg-card border-2 ${fieldErrors.password ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-y-2 px-2">
+            {passwordRequirements.map((req) => (
+              <div key={req.id} className="flex items-center gap-2">
+                <div
+                  className={`w-1.5 h-1.5 rounded-full ${req.met ? `bg-brand` : `bg-text-dim/30`}`}
+                />
+                <p
+                  className={`text-[10px] font-bold uppercase tracking-wider ${req.met ? `text-brand` : `text-text-dim/50`}`}
+                >
+                  {req.label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              placeholder="Powtórz hasło"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={`w-full bg-bg-card border-2 ${formData.confirmPassword && !passwordsMatch ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+          <input
+            type="text"
+            name="playerTag"
+            placeholder="Player Tag (np. #P8L2V)"
+            value={formData.playerTag}
+            onChange={handleChange}
+            className={`w-full bg-bg-card border-2 ${fieldErrors.playerTag ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all font-mono italic`}
+          />
+
+          <div className="space-y-4 px-2">
+            {/* Custom Checkbox: Regulamin */}
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  name="termsAccepted"
+                  checked={formData.termsAccepted}
+                  onChange={handleChange}
+                  className={`appearance-none w-6 h-6 rounded-lg border-2 transition-all cursor-pointer ${
+                    showConsentError && !formData.termsAccepted
+                      ? "border-error bg-error/10"
+                      : "border-ui-border bg-bg-card checked:bg-brand checked:border-brand"
+                  }`}
+                />
+                {formData.termsAccepted && (
+                  <Check
+                    size={14}
+                    className="absolute text-white pointer-events-none"
+                  />
+                )}
+              </div>
+              <span
+                className={`text-[10px] uppercase font-bold transition-colors ${
+                  showConsentError && !formData.termsAccepted
+                    ? "text-error"
+                    : "text-text-dim opacity-70 group-hover:opacity-100"
+                }`}
+              >
+                Akceptuję regulamin serwisu (Wymagane)
+              </span>
+            </label>
+
+            {/* Custom Checkbox: Marketing */}
+            <label className="flex items-center gap-3 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  name="marketingConsent"
+                  checked={formData.marketingConsent}
+                  onChange={handleChange}
+                  className="appearance-none w-6 h-6 rounded-lg border-2 border-ui-border bg-bg-card checked:bg-brand checked:border-brand transition-all cursor-pointer"
+                />
+                {formData.marketingConsent && (
+                  <Check
+                    size={14}
+                    className="absolute text-white pointer-events-none"
+                  />
+                )}
+              </div>
+              <span className="text-[10px] text-text-dim uppercase font-bold opacity-70 group-hover:opacity-100">
+                Zgoda na marketing (Opcjonalne)
+              </span>
+            </label>
+
+            <div
+              className={`p-4 rounded-xl border-l-4 transition-all ${
+                showConsentError && !formData.termsAccepted
+                  ? "bg-error/10 border-error border-y border-r"
+                  : "bg-brand/5 border-brand border-y border-r"
+              }`}
+            >
+              <p
+                className={`text-[10px] uppercase font-bold tracking-tight mb-1 ${
+                  showConsentError && !formData.termsAccepted
+                    ? "text-error"
+                    : "text-brand"
+                }`}
+              >
+                Informacja o Administratorze
               </p>
-            )}
+              <p
+                className={`text-[9px] leading-tight uppercase font-medium ${
+                  showConsentError && !formData.termsAccepted
+                    ? "text-error/80"
+                    : "text-text-dim/70"
+                }`}
+              >
+                Administratorem danych jest ClashTracker.pl. Twoje dane są
+                chronione i przetwarzane zgodnie z polityką prywatności w celu
+                obsługi Twojego konta.
+              </p>
+            </div>
           </div>
 
           <button
