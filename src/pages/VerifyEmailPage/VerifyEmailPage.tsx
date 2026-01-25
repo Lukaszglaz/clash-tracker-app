@@ -1,12 +1,13 @@
 import {
   useState,
   useRef,
+  useEffect,
   type FC,
   type FormEvent,
   type KeyboardEvent,
   type ClipboardEvent,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../../api/axios";
 import { toast } from "react-toastify";
 import { ShieldCheck, ArrowLeft, RefreshCw, Lock } from "lucide-react";
@@ -19,7 +20,19 @@ export const VerifyEmailPage: FC = () => {
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, login } = useAuth();
+
+  const emailToVerify = location.state?.email || user?.email;
+
+  useEffect(() => {
+    if (!emailToVerify) {
+      toast.warn(
+        "Proszę podać e-mail lub zalogować się, aby kontynuować weryfikację.",
+      );
+      navigate("/login", { replace: true });
+    }
+  }, [emailToVerify, navigate]);
 
   const handleChange = (index: number, value: string) => {
     if (!/^[0-9A-Z]*$/.test(value)) return;
@@ -61,23 +74,15 @@ export const VerifyEmailPage: FC = () => {
     e.preventDefault();
     const finalCode = code.join("");
 
-    if (!user?.email) {
-      toast.error("Błąd sesji. Zaloguj się ponownie.");
-      return;
-    }
+    if (!emailToVerify) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
-      await api.post("/auth/verify", { email: user.email, code: finalCode });
+      await api.post("/auth/verify", { email: emailToVerify, code: finalCode });
 
-      const token = localStorage.getItem("token");
-      if (token && user) {
-        login(token, { ...user, isVerified: true });
-      }
-
-      toast.success("Konto zweryfikowane!", {
+      toast.success("Konto zweryfikowane pomyślnie!", {
         icon: <ShieldCheck size={20} className="text-brand" />,
         style: {
           borderRadius: "16px",
@@ -87,7 +92,18 @@ export const VerifyEmailPage: FC = () => {
         },
       });
 
-      navigate("/dashboard", { replace: true });
+      if (user) {
+        const token = localStorage.getItem("token");
+        if (token) {
+          login(token, { ...user, isVerified: true });
+        }
+      }
+
+      if (user) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        navigate("/login", { replace: true });
+      }
     } catch (err: any) {
       const errMsg = err.response?.data?.message || "Nieprawidłowy kod.";
       setError(errMsg);
@@ -99,6 +115,7 @@ export const VerifyEmailPage: FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-body px-6 relative overflow-hidden">
+      {/* Background Orbs */}
       <div className="absolute top-1/4 -right-20 w-96 h-96 bg-brand/10 blur-[130px] rounded-full" />
       <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-accent-text/5 blur-[130px] rounded-full" />
 
@@ -109,13 +126,13 @@ export const VerifyEmailPage: FC = () => {
           </div>
 
           <h2 className="text-3xl font-black uppercase italic mb-3 tracking-tighter text-text-main">
-            Bezpieczna <span className="text-brand">Weryfikacja</span>
+            Weryfikacja <span className="text-brand">Konta</span>
           </h2>
 
           <p className="text-text-dim text-sm mb-10 leading-relaxed">
-            Wprowadź 6-cyfrowy kod wysłany na: <br />
+            Wprowadź kod wysłany na adres: <br />
             <span className="text-text-main font-bold opacity-90 break-all">
-              {user?.email || "Twój e-mail"}
+              {emailToVerify || "Twoje dane"}
             </span>
           </p>
 
@@ -155,7 +172,7 @@ export const VerifyEmailPage: FC = () => {
               {isLoading ? (
                 <RefreshCw className="animate-spin" size={20} />
               ) : (
-                "Zweryfikuj konto"
+                "Potwierdź kod"
               )}
             </button>
           </form>
