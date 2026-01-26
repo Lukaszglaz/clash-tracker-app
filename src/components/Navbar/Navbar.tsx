@@ -57,7 +57,7 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                 ) : (
                   <Button
                     variant="destructive"
-                    destructiveStyle="outline-subtle"
+                    actionStyle="filled"
                     isPulsing={true}
                     size="small"
                   >
@@ -67,7 +67,7 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
 
                 <Button
                   variant="destructive"
-                  destructiveStyle="outline-subtle"
+                  actionStyle="outline-subtle"
                   size="small"
                   onClick={onLogout}
                 >
