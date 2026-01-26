@@ -7,10 +7,11 @@ import {
   type KeyboardEvent,
   type ClipboardEvent,
 } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { api } from "../../api/axios";
 import { toast } from "react-toastify";
-import { LockKeyhole, ArrowLeft, RefreshCw } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole } from "lucide-react";
+import { Button } from "../../components/shared/Button/Button";
 
 interface LocationState {
   email?: string;
@@ -21,6 +22,7 @@ export const ResetPasswordPage: FC = () => {
   const [newPass, setNewPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const navigate = useNavigate();
@@ -145,38 +147,57 @@ export const ResetPasswordPage: FC = () => {
               <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-text-dim mb-1.5 ml-1">
                 Nowe Hasło (min. 8 znaków)
               </label>
-              <input
-                type="password"
-                required
-                minLength={8}
-                value={newPass}
-                onChange={(e) => setNewPass(e.target.value)}
-                className="w-full bg-bg-body border-2 border-ui-border rounded-xl px-5 py-3.5 text-text-main focus:outline-none focus:border-brand/50 transition-all font-bold placeholder:text-text-dim/20"
-                placeholder="••••••••"
-              />
-            </div>
 
-            <button
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  minLength={8}
+                  value={newPass}
+                  onChange={(e) => setNewPass(e.target.value)}
+                  className="w-full bg-bg-body border-2 border-ui-border rounded-xl px-5 pr-12 py-3.5 text-text-main focus:outline-none focus:border-brand/50 transition-all font-bold placeholder:text-text-dim/20"
+                  placeholder="••••••••"
+                />
+
+                <Button
+                  type="button"
+                  variant="clean"
+                  cleanStyle="link"
+                  className="absolute right-4 top-1/2 -translate-y-1/2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </Button>
+              </div>
+            </div>
+            <Button
+              variant="primary"
               type="submit"
+              fullWidth
               disabled={
                 isLoading || code.some((d) => d === "") || newPass.length < 8
               }
-              className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl transition-all cursor-pointer"
+              isLoading={isLoading}
             >
-              {isLoading ? (
-                <RefreshCw className="animate-spin mx-auto" size={18} />
-              ) : (
-                "Zatwierdź zmiany"
-              )}
-            </button>
+              Zatwierdź zmiany
+            </Button>
           </form>
 
-          <button
-            onClick={() => navigate("/login")}
-            className="flex items-center justify-center gap-2 w-full text-[9px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-6 py-1 opacity-60"
-          >
-            <ArrowLeft size={10} /> Wróć do logowania
-          </button>
+          <div className="flex items-center justify-center gap-2 mt-10 w-full">
+            <p className="text-text-dim text-[10px] uppercase tracking-widest font-bold opacity-60">
+              Chcesz wrócić, aby się zalogować?
+            </p>
+
+            <Button
+              asChild
+              variant="clean"
+              cleanStyle="link"
+              size="small"
+              className="text-xs"
+            >
+              <Link to="/login">Zaloguj się</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
