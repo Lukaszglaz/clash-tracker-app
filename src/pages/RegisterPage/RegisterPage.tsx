@@ -356,13 +356,20 @@ export const RegisterPage: FC = () => {
           </Button>
         </form>
 
-        <div className="mt-8 text-center">
-          <p className="text-text-dim text-xs uppercase tracking-widest font-bold opacity-60">
-            Masz już konto?{" "}
-            <Link to="/login" className="text-brand font-black ml-1">
-              Zaloguj się
-            </Link>
+        <div className="flex items-center justify-center gap-2 mt-10 w-full">
+          <p className="text-text-dim text-[10px] uppercase tracking-widest font-bold opacity-60">
+            Masz już konto?
           </p>
+
+          <Button
+            asChild
+            variant="clean"
+            cleanStyle="link"
+            size="small"
+            className="text-xs"
+          >
+            <Link to="/login">Zaloguj się</Link>
+          </Button>
         </div>
       </div>
     </div>
