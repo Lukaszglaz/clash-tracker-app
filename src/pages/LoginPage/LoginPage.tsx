@@ -12,6 +12,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import { Button } from "../../components/shared/Button/Button";
 
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
@@ -112,50 +113,53 @@ export const LoginPage: FC = () => {
                 required
                 className="w-full bg-bg-body border-2 border-ui-border rounded-2xl pl-14 pr-5 py-4 text-sm font-bold text-text-main focus:outline-none focus:border-brand transition-all placeholder:text-text-dim/30"
               />
-              <button
+              <Button
                 type="button"
+                variant="clean"
+                cleanStyle="link"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 "
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+              </Button>
             </div>
 
             <div className="flex justify-end px-2">
-              <Link
-                to="/forgot-password"
-                className="text-[10px] uppercase font-black text-brand/60 hover:text-brand transition-colors tracking-widest"
+              <Button
+                asChild
+                variant="clean"
+                cleanStyle="link"
+                className="text-xs"
               >
-                Zapomniałeś hasła?
-              </Link>
+                <Link to="/forgot-password">Zapomniałeś hasła?</Link>
+              </Button>
             </div>
 
-            <button
+            <Button
               type="submit"
-              disabled={isLoading}
-              className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-brand/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 cursor-pointer"
+              variant="primary"
+              isLoading={isLoading}
+              fullWidth
+              className="gap-2.5"
             >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <LogIn size={18} />
-                  <span>Zaloguj się</span>
-                </>
-              )}
-            </button>
+              <LogIn size={20} strokeWidth={2.5} />
+              <span className="leading-none">Zaloguj się</span>
+            </Button>
           </form>
 
-          <div className="mt-8 pt-8 border-t border-ui-border/50 text-center">
+          <div className="flex items-center justify-center gap-2 mt-6">
             <p className="text-text-dim text-[10px] uppercase tracking-widest font-bold opacity-60">
               Nie masz jeszcze konta?
-              <Link
-                to="/register"
-                className="text-brand font-black ml-2 hover:underline"
-              >
-                Zarejestruj się
-              </Link>
             </p>
+
+            <Button
+              asChild
+              variant="clean"
+              cleanStyle="link"
+              className="text-xs"
+            >
+              <Link to="/register">Zarejestruj się</Link>
+            </Button>
           </div>
         </div>
 
