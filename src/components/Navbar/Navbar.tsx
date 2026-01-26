@@ -1,6 +1,7 @@
 import { type FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { Button } from "../shared/Button/Button";
 
 interface NavbarProps {
   isLoggedIn: boolean;
@@ -19,19 +20,15 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
 
   return (
     <>
-      {/* Pasek ostrzegawczy o braku weryfikacji */}
       {showVerifyAlert && (
         <div className="bg-error/10 border-b border-error/20 py-2 animate-in slide-in-from-top duration-500">
           <div className="max-w-7xl mx-auto px-6 flex justify-center items-center gap-3">
             <span className="text-[10px] font-black uppercase tracking-widest text-error italic">
               Twoje konto nie jest w pełni aktywne!
             </span>
-            <Link
-              to="/verify-email"
-              className="text-[10px] font-black uppercase tracking-widest bg-error text-white px-3 py-1 rounded-md hover:scale-105 transition-all"
-            >
-              Weryfikacja
-            </Link>
+            <Button variant="destructive" size="small">
+              <Link to="/verify-email">Weryfikacja konta</Link>
+            </Button>
           </div>
         </div>
       )}
@@ -49,42 +46,52 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 {user?.isVerified || isResetPage ? (
-                  <Link
-                    to="/dashboard"
-                    className="text-xs font-bold uppercase tracking-widest px-6 py-2 rounded-full bg-brand text-white shadow-lg shadow-brand/20 hover:scale-105 transition-all text-center"
+                  <Button
+                    asChild
+                    variant="primary"
+                    size="small"
+                    className="border border-ui-border"
                   >
-                    Panel Gracza
-                  </Link>
+                    <Link to="/dashboard">Panel Gracza</Link>
+                  </Button>
                 ) : (
-                  <Link
-                    to="/verify-email"
-                    className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full bg-error/20 text-error border border-error/20 hover:bg-error/30 transition-all animate-pulse"
+                  <Button
+                    variant="destructive"
+                    actionStyle="filled"
+                    isPulsing={true}
+                    size="small"
                   >
-                    Weryfikacja Konta
-                  </Link>
+                    <Link to="/verify-email">Weryfikacja konta</Link>
+                  </Button>
                 )}
 
-                <button
+                <Button
+                  variant="destructive"
+                  actionStyle="outline-subtle"
+                  size="small"
                   onClick={onLogout}
-                  className="text-[10px] font-bold uppercase text-error hover:underline cursor-pointer ml-2"
                 >
                   Wyloguj
-                </button>
+                </Button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Link
-                  to="/login"
-                  className="text-xs font-bold uppercase px-6 py-2 text-text-main hover:text-brand transition-colors cursor-pointer"
+                <Button
+                  asChild
+                  variant="primary"
+                  size="small"
+                  className="border border-ui-border"
                 >
-                  Zaloguj
-                </Link>
-                <Link
-                  to="/register"
-                  className="text-xs font-bold uppercase px-6 py-2 rounded-full border border-ui-border hover:border-brand transition-all cursor-pointer text-center text-text-main"
+                  <Link to="/login">Zaloguj</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="secondary"
+                  size="small"
+                  className="border border-ui-border"
                 >
-                  Rejestracja
-                </Link>
+                  <Link to="/register">Zarejestruj się</Link>
+                </Button>
               </div>
             )}
           </div>

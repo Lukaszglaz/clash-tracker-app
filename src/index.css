@@ -2,34 +2,72 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap");
 
 :root {
+  /* BACKGROUNDS */
   --bg-page: #f8f8f8;
   --bg-surface: #ffffff;
+
+  /* TEXT */
   --text-primary: #0d0d0d;
   --text-secondary: #4a4a4a;
-
-  --color-accent: #d43fb8;
-  --color-accent-hover: #f062d4;
   --text-tertiary: #9d3088;
 
+  /* BRAND / ACCENT */
+  --color-accent: #d43fb8;
+  --color-accent-hover: #f062d4;
+  --color-checked-bg: #2d0a2d;
+
+  /* INTERFACE */
   --color-border: #e0e0e0;
+
+  /* SUCCESS (Jasny motyw) */
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-subtle: rgba(16, 185, 129, 0.1);
+
+  /* ERROR / DESTRUCTIVE */
   --color-destructive: #ff4d4d;
   --color-destructive-hover: #d93636;
-  --color-checked-bg: #2d0a2d;
+  --color-destructive-subtle: rgba(255, 77, 77, 0.1);
+
+  /* IKONY (Dla wysokiego kontrastu) */
+  --icon-success: #059669;
+  --icon-error: #d93636;
+  --icon-brand: #9d3088;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* BACKGROUNDS */
     --bg-page: #000000;
     --bg-surface: #121212;
+
+    /* TEXT */
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
-
-    --color-accent: #bc47fb;
-    --color-accent-hover: #d682ff;
     --text-tertiary: #ff4eb8;
 
-    --color-border: #2a2a2a;
+    /* BRAND / ACCENT */
+    --color-accent: #bc47fb;
+    --color-accent-hover: #d682ff;
     --color-checked-bg: #1a0b1a;
+
+    /* INTERFACE */
+    --color-border: #2a2a2a;
+
+    /* SUCCESS (Przygaszony neon - bezpieczny dla oczu) */
+    --color-success: #00d977;
+    --color-success-hover: #00f285;
+    --color-success-subtle: rgba(0, 217, 119, 0.12);
+
+    /* ERROR / DESTRUCTIVE */
+    --color-destructive: #ff4d4d;
+    --color-destructive-hover: #ff6666;
+    --color-destructive-subtle: rgba(255, 77, 77, 0.15);
+
+    /* IKONY W TRYBIE CIEMNYM (Podbita jasność dla wariantu icon) */
+    --icon-success: #3effa2;
+    --icon-error: #ff7a7a;
+    --icon-brand: #d682ff;
   }
 }
 
@@ -42,8 +80,21 @@
   --color-brand-hover: var(--color-accent-hover);
   --color-accent-text: var(--text-tertiary);
   --color-ui-border: var(--color-border);
+
+  /* SUCCESS */
+  --color-success: var(--color-success);
+  --color-success-hover: var(--color-success-hover);
+  --color-success-subtle: var(--color-success-subtle);
+
+  /* ERROR */
   --color-error: var(--color-destructive);
   --color-error-hover: var(--color-destructive-hover);
+  --color-error-subtle: var(--color-destructive-subtle);
+
+  /* DEDYKOWANE KOLORY IKON */
+  --color-icon-success: var(--icon-success);
+  --color-icon-error: var(--icon-error);
+  --color-icon-brand: var(--icon-brand);
 }
 
 body {

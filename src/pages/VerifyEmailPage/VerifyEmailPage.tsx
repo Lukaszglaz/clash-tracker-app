@@ -7,11 +7,12 @@ import {
   type KeyboardEvent,
   type ClipboardEvent,
 } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { api } from "../../api/axios";
 import { toast } from "react-toastify";
-import { ShieldCheck, ArrowLeft, RefreshCw, Lock } from "lucide-react";
+import { ShieldCheck, Lock } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { Button } from "../../components/shared/Button/Button";
 
 export const VerifyEmailPage: FC = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -163,27 +164,32 @@ export const VerifyEmailPage: FC = () => {
                 />
               ))}
             </div>
-
-            <button
+            <Button
+              variant="primary"
               type="submit"
               disabled={isLoading || code.some((d) => d === "")}
-              className="w-full py-5 bg-brand hover:bg-brand-hover text-white font-black uppercase tracking-[0.2em] rounded-2xl shadow-xl shadow-brand/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-30 disabled:grayscale cursor-pointer flex items-center justify-center gap-3"
+              isLoading={isLoading}
+              fullWidth
             >
-              {isLoading ? (
-                <RefreshCw className="animate-spin" size={20} />
-              ) : (
-                "Potwierdź kod"
-              )}
-            </button>
+              Potwierdź kod
+            </Button>
           </form>
 
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center justify-center gap-2 w-full text-[10px] text-text-dim hover:text-text-main uppercase tracking-[0.3em] font-black transition-colors mt-10 py-2 cursor-pointer opacity-60"
-          >
-            <ArrowLeft size={12} />
-            Wróć do strony głównej
-          </button>
+          <div className="flex items-center justify-center gap-2 mt-10 w-full">
+            <p className="text-text-dim text-[10px] uppercase tracking-widest font-bold opacity-60">
+              Chcesz wrócić?
+            </p>
+
+            <Button
+              asChild
+              variant="clean"
+              cleanStyle="link"
+              size="small"
+              className="text-xs"
+            >
+              <Link to="/">Strona główna</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

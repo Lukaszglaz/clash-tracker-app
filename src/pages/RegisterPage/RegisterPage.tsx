@@ -5,6 +5,7 @@ import { registerSchema } from "../../schemas/register.schema";
 import { checkValidation } from "../../schemas";
 import { toast } from "react-toastify";
 import { AlertCircle, Check, Eye, EyeOff } from "lucide-react";
+import { Button } from "../../components/shared/Button/Button";
 
 export const RegisterPage: FC = () => {
   const [formData, setFormData] = useState({
@@ -186,13 +187,15 @@ export const RegisterPage: FC = () => {
               onChange={handleChange}
               className={`w-full bg-bg-card border-2 ${fieldErrors.password ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
             />
-            <button
+            <Button
               type="button"
+              variant="clean"
+              cleanStyle="link"
+              className="absolute right-4 top-1/2 -translate-y-1/2"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+            </Button>
           </div>
 
           <div className="grid grid-cols-2 gap-y-2 px-2">
@@ -225,13 +228,15 @@ export const RegisterPage: FC = () => {
                     : "border-ui-border"
                 } rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
               />
-              <button
+              <Button
                 type="button"
+                variant="clean"
+                cleanStyle="link"
+                className="absolute right-4 top-1/2 -translate-y-1/2"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 hover:text-brand transition-colors cursor-pointer"
               >
                 {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+              </Button>
             </div>
 
             {formData.confirmPassword && !passwordsMatch && (
@@ -339,22 +344,32 @@ export const RegisterPage: FC = () => {
             </div>
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-brand hover:bg-brand-hover text-white font-bold uppercase tracking-widest rounded-2xl shadow-lg transition-all active:scale-95 disabled:opacity-50 mt-4 cursor-pointer"
+            fullWidth
+            variant="primary"
+            isLoading={isLoading}
+            className="gap-2.5 mt-4"
           >
-            {isLoading ? "Rejestracja..." : "Stwórz konto"}
-          </button>
+            Zarejestruj się
+          </Button>
         </form>
 
-        <div className="mt-8 text-center">
-          <p className="text-text-dim text-xs uppercase tracking-widest font-bold opacity-60">
-            Masz już konto?{" "}
-            <Link to="/login" className="text-brand font-black ml-1">
-              Zaloguj się
-            </Link>
+        <div className="flex items-center justify-center gap-2 mt-10 w-full">
+          <p className="text-text-dim text-[10px] uppercase tracking-widest font-bold opacity-60">
+            Masz już konto?
           </p>
+
+          <Button
+            asChild
+            variant="clean"
+            cleanStyle="link"
+            size="small"
+            className="text-xs"
+          >
+            <Link to="/login">Zaloguj się</Link>
+          </Button>
         </div>
       </div>
     </div>
