@@ -15,12 +15,14 @@ type ButtonProps = {
   fullWidth?: boolean;
   asChild?: boolean;
   noAnimation?: boolean;
-  isPulsing?: boolean; // Nowy prop do włączania pulsowania
+  isPulsing?: boolean;
+  cleanStyle?: "button" | "link";
 } & ComponentPropsWithoutRef<"button">;
 
 export const Button: React.FC<ButtonProps> = ({
   variant = "primary",
   destructiveStyle = "filled",
+  cleanStyle = "button",
   size = "medium",
   isLoading,
   fullWidth = false,
@@ -39,12 +41,17 @@ export const Button: React.FC<ButtonProps> = ({
       "bg-brand text-white hover:bg-brand-hover shadow-lg shadow-brand/20 focus:outline-brand",
     secondary:
       "bg-bg-card text-text-main border border-ui-border hover:border-brand hover:text-brand focus:outline-brand",
-    clean:
-      "bg-transparent text-text-dim hover:text-brand active:text-brand-hover focus:outline-brand transition-colors",
-    destructive:
-      destructiveStyle === "filled"
-        ? "bg-error text-white hover:bg-error-hover focus:outline-error"
-        : "bg-error/10 text-error border border-error/20 hover:bg-error/20 focus:outline-error",
+    clean: clsx(
+      "bg-transparent text-text-dim hover:text-brand transition-colors focus:outline-brand",
+      cleanStyle === "link" && "h-auto p-0 inline-flex focus:outline-none",
+    ),
+    destructive: clsx(
+      "focus:outline-error transition-all",
+      destructiveStyle === "filled" &&
+        "bg-error text-white hover:bg-error-hover",
+      destructiveStyle === "outline-subtle" &&
+        "bg-error/10 text-error border border-error/20 hover:bg-error/20",
+    ),
   };
 
   const sizeStyles: Record<ButtonSize, string> = {
@@ -70,7 +77,7 @@ export const Button: React.FC<ButtonProps> = ({
     <Component
       className={clsx(
         baseStyles,
-        sizeStyles[size],
+        !(variant === "clean" && cleanStyle === "link") && sizeStyles[size],
         variantStyles[variant],
         !noAnimation && !isLoading && "active:scale-[0.98]",
         isPulsing && "animate-pulse",
