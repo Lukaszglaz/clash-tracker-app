@@ -108,17 +108,17 @@ export const LoginPage: FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                leftIcon={<Lock size={18} />}
+                leftIcon={<Lock />}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-text-dim/50 hover:text-brand transition-colors p-1"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                }
               />
-              <Button
-                type="button"
-                variant="clean"
-                cleanStyle="link"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim/50 "
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </Button>
             </div>
 
             <div className="flex justify-end px-2">
