@@ -80,12 +80,12 @@ export const InputBase = forwardRef<HTMLInputElement, InputProps>(
             }}
             className={clsx(
               "w-full bg-bg-card border-2 transition-all duration-200 outline-none",
-              "text-sm font-bold text-text-main placeholder:text-text-dim/30",
+              "text-sm text-text-main placeholder:text-text-dim/30",
               "h-14 rounded-2xl",
               leftIcon ? "pl-14" : "pl-6",
               rightIcon ? "pr-14" : "pr-6",
               error
-                ? "border-error focus:border-error shadow-sm shadow-error/10" 
+                ? "border-error focus:border-error shadow-sm shadow-error/10"
                 : "border-ui-border focus:border-brand shadow-sm focus:shadow-brand/10",
               className,
             )}

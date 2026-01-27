@@ -4,6 +4,7 @@ import { api } from "../../api/axios";
 import { toast } from "react-toastify";
 import { Mail, Info } from "lucide-react";
 import { Button } from "../../components/shared/Button/Button";
+import { InputBase } from "../../components/shared/InputBase/InputBase";
 
 export const ForgotPasswordPage: FC = () => {
   const [email, setEmail] = useState("");
@@ -71,16 +72,13 @@ export const ForgotPasswordPage: FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="relative group text-left">
-              <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-text-dim mb-2 ml-1">
-                Adres E-mail
-              </label>
-              <input
+              <InputBase
                 type="email"
-                required
-                placeholder="ADRES E-MAIL"
+                placeholder="Adres e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl px-5 py-5 text-text-main focus:outline-none focus:border-brand transition-all text-sm font-bold tracking-widest placeholder:opacity-20"
+                required
+                leftIcon={<Mail size={18} />}
               />
             </div>
             <Button
