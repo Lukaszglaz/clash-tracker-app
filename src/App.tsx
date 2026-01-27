@@ -14,6 +14,7 @@ import { CheckEmailPage } from "./pages/CheckEmailPage/CheckEmailPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage/ResetPasswordPage";
 import { DashBoardPage } from "./pages/Dashboard/Dashboard";
+import { ScrollToTop } from "./components/shared/ScrollToTop/ScrollToTop";
 
 const AppLayout: FC = () => (
   <Layout>
@@ -24,6 +25,7 @@ const AppLayout: FC = () => (
 export const App: FC = () => {
   return (
     <AuthProvider>
+      <ScrollToTop />
       <ToastContainer theme="dark" position="top-right" />
 
       <Routes>
