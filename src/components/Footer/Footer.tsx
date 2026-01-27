@@ -30,18 +30,21 @@ export const Footer: FC = () => {
               <a
                 href="#"
                 className="text-text-dim hover:text-brand transition-colors"
+                aria-label="Odwiedź nasz profil na Github"
               >
                 <Github size={18} />
               </a>
               <a
                 href="#"
                 className="text-text-dim hover:text-brand transition-colors"
+                aria-label="Odwiedź nasz profil na Twitter"
               >
                 <Twitter size={18} />
               </a>
               <a
                 href="#"
                 className="text-text-dim hover:text-brand transition-colors"
+                aria-label="Napisz do nas wiadomość"
               >
                 <MessageSquare size={18} />
               </a>
@@ -105,7 +108,7 @@ export const Footer: FC = () => {
               </p>
               <a
                 href="mailto:kontakt@glazlukasz.pl"
-                className="inline-flex items-center justify-center bg-brand/10 border border-brand/20 px-4 py-2 rounded-xl text-brand text-[10px] font-black hover:bg-brand hover:text-white transition-all active:scale-95"
+                className="inline-flex items-center justify-center bg-brand/5 border border-brand/20 px-4 py-2 rounded-xl text-brand text-[10px] font-black hover:bg-brand hover:text-white transition-all active:scale-95"
               >
                 KONTAKT@GLAZLUKASZ.PL
               </a>
@@ -117,7 +120,7 @@ export const Footer: FC = () => {
             © 2026 ClashTracker. Wszelkie prawa zastrzeżone.
           </p>
 
-          <div className="flex items-center gap-2 text-[10px] text-text-dim/60 uppercase tracking-[0.15em] font-medium">
+          <div className="flex items-center gap-2 text-[10px] text-brand uppercase tracking-[0.15em] font-medium">
             Designed & Developed by
             <a
               href="https://glazlukasz.pl"

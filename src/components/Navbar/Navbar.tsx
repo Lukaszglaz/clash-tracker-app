@@ -104,6 +104,7 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           <button
             className="md:hidden p-2 text-text-main"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Zamknij menu" : "Otwórz menu"}
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>

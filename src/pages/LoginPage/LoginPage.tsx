@@ -70,8 +70,8 @@ export const LoginPage: FC = () => {
               Clash <span className="text-brand">Tracker</span>
             </h2>
           </div>
-          <h1 className="text-2xl font-black italic uppercase text-text-main/90">
-            Witaj Ponownie
+          <h1 className="text-3xl font-black italic uppercase tracking-tight text-text-main">
+            Witaj <span className="text-brand">Ponownie</span>
           </h1>
           <p className="text-text-dim text-xs uppercase tracking-[0.2em] font-bold mt-2 opacity-60">
             Zaloguj się do swojego konta
