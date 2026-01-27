@@ -13,6 +13,7 @@ import {
   EyeOff,
 } from "lucide-react";
 import { Button } from "../../components/shared/Button/Button";
+import { InputBase } from "../../components/shared/InputBase/InputBase";
 
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
@@ -90,28 +91,24 @@ export const LoginPage: FC = () => {
               <div className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-brand transition-colors">
                 <Mail size={18} />
               </div>
-              <input
+              <InputBase
                 type="email"
                 placeholder="Adres e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl pl-14 pr-5 py-4 text-sm font-bold text-text-main focus:outline-none focus:border-brand transition-all placeholder:text-text-dim/30"
+                leftIcon={<Mail size={18} />}
               />
             </div>
 
             <div className="relative group">
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-brand transition-colors">
-                <Lock size={18} />
-              </div>
-              <input
+              <InputBase
                 type={showPassword ? "text" : "password"}
-                name="password"
                 placeholder="Hasło"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-bg-body border-2 border-ui-border rounded-2xl pl-14 pr-5 py-4 text-sm font-bold text-text-main focus:outline-none focus:border-brand transition-all placeholder:text-text-dim/30"
+                leftIcon={<Lock size={18} />}
               />
               <Button
                 type="button"
