@@ -136,27 +136,24 @@ export const ResetPasswordPage: FC = () => {
                 Nowe Hasło (min. 8 znaków)
               </label>
 
-              <div className="relative">
-                <InputBase
-                  type={showPassword ? "text" : "password"}
-                  value={newPass}
-                  onChange={(e) => setNewPass(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  minLength={8}
-                  leftIcon={<LockKeyhole className="w-4 h-4 text-text-dim" />}
-                />
-
-                <Button
-                  type="button"
-                  variant="clean"
-                  cleanStyle="link"
-                  className="absolute right-4 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </Button>
-              </div>
+              <InputBase
+                type={showPassword ? "text" : "password"}
+                value={newPass}
+                onChange={(e) => setNewPass(e.target.value)}
+                placeholder="••••••••"
+                required
+                minLength={8}
+                leftIcon={<LockKeyhole />}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-text-dim/50 hover:text-brand transition-colors p-1"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                }
+              />
             </div>
             <Button
               variant="primary"
