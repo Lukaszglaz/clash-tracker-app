@@ -12,6 +12,8 @@ import { api } from "../../api/axios";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { Button } from "../../components/shared/Button/Button";
+import { OTPInput } from "../../components/shared/OTPInput/OTPInput";
+import { InputBase } from "../../components/shared/InputBase/InputBase";
 
 interface LocationState {
   email?: string;
@@ -119,28 +121,14 @@ export const ResetPasswordPage: FC = () => {
             )}
 
             <div className="space-y-2">
-              <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-text-dim ml-1">
-                Kod Weryfikacyjny
-              </label>
-              <div
-                className="flex justify-between gap-1.5"
+              <OTPInput
+                label="Kod Weryfikacyjny"
+                code={code}
+                inputsRef={inputsRef}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 onPaste={handlePaste}
-              >
-                {code.map((digit, index) => (
-                  <input
-                    key={index}
-                    ref={(el) => {
-                      inputsRef.current[index] = el;
-                    }}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    className={`w-full h-14 bg-bg-body border-2 ${digit ? "border-brand" : "border-ui-border"} rounded-xl text-center text-2xl font-black text-text-main focus:outline-none focus:border-brand transition-all`}
-                  />
-                ))}
-              </div>
+              />
             </div>
 
             <div className="group">
@@ -149,14 +137,14 @@ export const ResetPasswordPage: FC = () => {
               </label>
 
               <div className="relative">
-                <input
+                <InputBase
                   type={showPassword ? "text" : "password"}
-                  required
-                  minLength={8}
                   value={newPass}
                   onChange={(e) => setNewPass(e.target.value)}
-                  className="w-full bg-bg-body border-2 border-ui-border rounded-xl px-5 pr-12 py-3.5 text-text-main focus:outline-none focus:border-brand/50 transition-all font-bold placeholder:text-text-dim/20"
                   placeholder="••••••••"
+                  required
+                  minLength={8}
+                  leftIcon={<LockKeyhole className="w-4 h-4 text-text-dim" />}
                 />
 
                 <Button
