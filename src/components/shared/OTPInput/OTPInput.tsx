@@ -41,12 +41,11 @@ export const OTPInput = ({
             onChange={(e) => onChange(index, e.target.value)}
             onKeyDown={(e) => onKeyDown(index, e)}
             className={clsx(
-              "w-full h-16 rounded-2xl border-2 transition-all duration-200 outline-none",
-              "bg-bg-card text-center text-2xl font-black text-text-main",
+              "w-12 h-16 md:w-14 md:h-20 rounded-2xl border-2 transition-all duration-200 outline-none",
+              "bg-bg-card text-center text-3xl font-black text-text-main",
               "focus:shadow-brand/10",
-              // Jeśli pole jest wypełnione, dajemy fioletowy border, jeśli nie - standardowy
               digit
-                ? "border-brand shadow-sm shadow-brand/10"
+                ? "border-brand shadow-lg shadow-brand/10 text-brand"
                 : "border-ui-border focus:border-brand",
             )}
           />

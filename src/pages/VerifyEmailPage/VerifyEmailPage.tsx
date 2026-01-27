@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { ShieldCheck, Lock } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../../components/shared/Button/Button";
+import { OTPInput } from "../../components/shared/OTPInput/OTPInput";
 
 export const VerifyEmailPage: FC = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -116,7 +117,6 @@ export const VerifyEmailPage: FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg-body px-6 relative overflow-hidden">
-      {/* Background Orbs */}
       <div className="absolute top-1/4 -right-20 w-96 h-96 bg-brand/10 blur-[130px] rounded-full" />
       <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-accent-text/5 blur-[130px] rounded-full" />
 
@@ -144,25 +144,14 @@ export const VerifyEmailPage: FC = () => {
               </div>
             )}
             <div className="flex justify-between gap-2" onPaste={handlePaste}>
-              {code.map((digit, index) => (
-                <input
-                  key={index}
-                  ref={(el) => {
-                    inputsRef.current[index] = el;
-                  }}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className={`w-12 h-16 md:w-14 md:h-20 bg-bg-body border-2 ${
-                    digit
-                      ? "border-brand shadow-lg shadow-brand/10"
-                      : "border-ui-border"
-                  } rounded-xl text-center text-3xl font-black text-text-dim focus:outline-none focus:border-brand transition-all duration-200 placeholder:text-white/5`}
-                  placeholder="0"
-                />
-              ))}
+              <OTPInput
+                label="Kod Weryfikacyjny"
+                code={code}
+                inputsRef={inputsRef}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                onPaste={handlePaste}
+              />
             </div>
             <Button
               variant="primary"
