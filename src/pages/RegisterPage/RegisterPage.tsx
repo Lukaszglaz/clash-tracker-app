@@ -4,8 +4,11 @@ import { api } from "../../api/axios";
 import { registerSchema } from "../../schemas/register.schema";
 import { checkValidation } from "../../schemas";
 import { toast } from "react-toastify";
-import { AlertCircle, Check, Eye, EyeOff } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Hash, Lock, Mail, User } from "lucide-react";
 import { Button } from "../../components/shared/Button/Button";
+import { InputBase } from "../../components/shared/InputBase/InputBase";
+import { Checkbox } from "../../components/shared/Checkbox/Checkbox";
+import clsx from "clsx";
 
 export const RegisterPage: FC = () => {
   const [formData, setFormData] = useState({
@@ -151,52 +154,53 @@ export const RegisterPage: FC = () => {
           )}
 
           <div className="grid grid-cols-2 gap-4">
-            <input
+            <InputBase
               type="text"
               name="firstName"
               placeholder="Imię"
               value={formData.firstName}
               onChange={handleChange}
-              className="w-full bg-bg-card border-2 border-ui-border rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all"
+              leftIcon={<User />}
+              error={fieldErrors.firstName}
             />
-            <input
+            <InputBase
               type="text"
               name="lastName"
               placeholder="Nazwisko"
               value={formData.lastName}
               onChange={handleChange}
-              className="w-full bg-bg-card border-2 border-ui-border rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all"
+              leftIcon={<User />}
+              error={fieldErrors.lastName}
             />
           </div>
-
-          <input
+          <InputBase
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full bg-bg-card border-2 ${fieldErrors.email ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all`}
+            error={fieldErrors.email}
+            leftIcon={<Mail />}
           />
 
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Hasło"
-              value={formData.password}
-              onChange={handleChange}
-              className={`w-full bg-bg-card border-2 ${fieldErrors.password ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
-            />
-            <Button
-              type="button"
-              variant="clean"
-              cleanStyle="link"
-              className="absolute right-4 top-1/2 -translate-y-1/2"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </Button>
-          </div>
+          <InputBase
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Hasło"
+            value={formData.password}
+            onChange={handleChange}
+            error={fieldErrors.password}
+            leftIcon={<Lock />}
+            rightIcon={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-text-dim/50 hover:text-brand transition-colors focus:outline-none"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            }
+          />
 
           <div className="grid grid-cols-2 gap-y-2 px-2">
             {passwordRequirements.map((req) => (
@@ -215,28 +219,28 @@ export const RegisterPage: FC = () => {
 
           <div className="space-y-2">
             <div className="relative">
-              <input
+              <InputBase
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 placeholder="Powtórz hasło"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`w-full bg-bg-card border-2 ${
-                  (formData.confirmPassword && !passwordsMatch) ||
-                  fieldErrors.confirmPassword
-                    ? "border-error/50"
-                    : "border-ui-border"
-                } rounded-2xl px-5 py-4 pr-12 text-text-dim focus:outline-none focus:border-brand transition-all`}
+                error={fieldErrors.confirmPassword}
+                leftIcon={<Lock />}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="text-text-dim/50 hover:text-brand transition-colors focus:outline-none"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
+                  </button>
+                }
               />
-              <Button
-                type="button"
-                variant="clean"
-                cleanStyle="link"
-                className="absolute right-4 top-1/2 -translate-y-1/2"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </Button>
             </div>
 
             {formData.confirmPassword && !passwordsMatch && (
@@ -251,95 +255,60 @@ export const RegisterPage: FC = () => {
               </p>
             )}
           </div>
-
-          <input
+          <InputBase
             type="text"
             name="playerTag"
             placeholder="Player Tag (np. #P8L2V)"
             value={formData.playerTag}
             onChange={handleChange}
-            className={`w-full bg-bg-card border-2 ${fieldErrors.playerTag ? "border-error/50" : "border-ui-border"} rounded-2xl px-5 py-4 text-text-dim focus:outline-none focus:border-brand transition-all font-mono italic`}
+            error={fieldErrors.playerTag}
+            leftIcon={<Hash />}
           />
 
           <div className="space-y-4 px-2">
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  name="termsAccepted"
-                  checked={formData.termsAccepted}
-                  onChange={handleChange}
-                  className={`appearance-none w-6 h-6 rounded-lg border-2 transition-all cursor-pointer ${
-                    showConsentError && !formData.termsAccepted
-                      ? "border-error bg-error/10"
-                      : "border-ui-border bg-bg-card checked:bg-brand checked:border-brand"
-                  }`}
-                />
-                {formData.termsAccepted && (
-                  <Check
-                    size={14}
-                    className="absolute text-white pointer-events-none"
-                  />
-                )}
-              </div>
-              <span
-                className={`text-[10px] uppercase font-bold transition-colors ${
-                  showConsentError && !formData.termsAccepted
-                    ? "text-error"
-                    : "text-text-dim opacity-70 group-hover:opacity-100"
-                }`}
-              >
-                Akceptuję regulamin serwisu (Wymagane)
-              </span>
-            </label>
+            <Checkbox
+              name="termsAccepted"
+              label="Akceptuję regulamin serwisu (Wymagane)"
+              checked={formData.termsAccepted}
+              onChange={handleChange}
+              error={showConsentError && !formData.termsAccepted}
+            />
 
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  name="marketingConsent"
-                  checked={formData.marketingConsent}
-                  onChange={handleChange}
-                  className="appearance-none w-6 h-6 rounded-lg border-2 border-ui-border bg-bg-card checked:bg-brand checked:border-brand transition-all cursor-pointer"
-                />
-                {formData.marketingConsent && (
-                  <Check
-                    size={14}
-                    className="absolute text-white pointer-events-none"
-                  />
-                )}
-              </div>
-              <span className="text-[10px] text-text-dim uppercase font-bold opacity-70 group-hover:opacity-100">
-                Zgoda na marketing (Opcjonalne)
-              </span>
-            </label>
+            <Checkbox
+              name="marketingConsent"
+              label="Zgoda na marketing (Opcjonalne)"
+              checked={formData.marketingConsent}
+              onChange={handleChange}
+            />
 
             <div
-              className={`p-4 rounded-xl border-l-4 transition-all ${
+              className={clsx(
+                "p-4 rounded-xl border-l-4 border-y border-r transition-all",
                 showConsentError && !formData.termsAccepted
-                  ? "bg-error/10 border-error border-y border-r"
-                  : "bg-brand/5 border-brand border-y border-r"
-              }`}
+                  ? "bg-error/10 border-error"
+                  : "bg-brand/5 border-brand",
+              )}
             >
               <p
-                className={`text-[10px] uppercase font-bold tracking-tight mb-1 ${
+                className={clsx(
+                  "text-[10px] uppercase font-bold tracking-tight mb-1",
                   showConsentError && !formData.termsAccepted
                     ? "text-error"
-                    : "text-brand"
-                }`}
+                    : "text-brand",
+                )}
               >
                 Informacja o Administratorze
               </p>
               <p
-                className={`text-[9px] leading-tight uppercase font-medium ${
+                className={clsx(
+                  "text-[9px] leading-tight uppercase font-medium",
                   showConsentError && !formData.termsAccepted
                     ? "text-error/80"
-                    : "text-text-dim/70"
-                }`}
+                    : "text-text-dim/70",
+                )}
               >
                 Administratorem danych jest ClashTracker.pl. Twoje dane są
-                chronione i przetwarzane zgodnie z polityką prywatności w celu
-                obsługi Twojego konta.
+                chronione...
               </p>
             </div>
           </div>
