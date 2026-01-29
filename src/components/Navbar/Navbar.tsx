@@ -23,22 +23,90 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
 
   const showVerifyAlert =
     isLoggedIn && user && !user.isVerified && !isVerifyPage && !isResetPage;
+  const NavLinks = ({ mobile = false }: { mobile?: boolean }) => {
+    const size = mobile ? "medium" : "small";
+    const containerClass = mobile
+      ? "flex flex-col items-center gap-4 w-full"
+      : "flex items-center gap-2";
 
+    return (
+      <div className={containerClass}>
+        <Button
+          asChild
+          variant="secondary"
+          size={size}
+          className="border border-ui-border"
+        >
+          <Link to="/">Strona Główna</Link>
+        </Button>
+
+        {isLoggedIn ? (
+          <>
+            {user?.isVerified || isResetPage ? (
+              <Button
+                asChild
+                variant="primary"
+                size={size}
+                className="border border-ui-border"
+              >
+                <Link to="/dashboard">Panel Gracza</Link>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                variant="destructive"
+                size={size}
+                isPulsing={true}
+              >
+                <Link to="/verify-email">Weryfikacja</Link>
+              </Button>
+            )}
+            <Button
+              variant="destructive"
+              actionStyle="outline-subtle"
+              size={size}
+              onClick={onLogout}
+            >
+              Wyloguj
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              asChild
+              variant="primary"
+              size={size}
+              className="border border-ui-border"
+            >
+              <Link to="/login">Zaloguj</Link>
+            </Button>
+            <Button
+              asChild
+              variant="secondary"
+              size={size}
+              className="border border-ui-border"
+            >
+              <Link to="/register">Zarejestruj się</Link>
+            </Button>
+          </>
+        )}
+      </div>
+    );
+  };
   return (
     <>
       {showVerifyAlert && (
         <div className="bg-error/10 border-b border-error/20 py-2 animate-in slide-in-from-top duration-500">
           <div className="max-w-7xl mx-auto px-6 flex justify-center items-center gap-3">
             <span className="text-[10px] font-black uppercase tracking-widest text-error italic">
-              Twoje konto nie jest w pełni aktywne!
+              Konto nieaktywne!
             </span>
             <Button variant="destructive" size="small">
-              <Link to="/verify-email">Weryfikacja konta</Link>
+              <Link to="/verify-email">Weryfikacja</Link>
             </Button>
           </div>
         </div>
       )}
-
       <nav className="border-b border-ui-border bg-bg-page/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-3 group cursor-pointer">
@@ -47,122 +115,21 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               CLASH<span className="text-brand">TRK</span>
             </h1>
           </Link>
-
-          <div className="hidden md:flex items-center gap-4">
-            {isLoggedIn ? (
-              <div className="flex items-center gap-4">
-                {user?.isVerified || isResetPage ? (
-                  <Button
-                    asChild
-                    variant="primary"
-                    size="small"
-                    className="border border-ui-border"
-                  >
-                    <Link to="/dashboard">Panel Gracza</Link>
-                  </Button>
-                ) : (
-                  <Button
-                    variant="destructive"
-                    actionStyle="filled"
-                    isPulsing={true}
-                    size="small"
-                  >
-                    <Link to="/verify-email">Weryfikacja konta</Link>
-                  </Button>
-                )}
-                <Button
-                  variant="destructive"
-                  actionStyle="outline-subtle"
-                  size="small"
-                  onClick={onLogout}
-                >
-                  Wyloguj
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Button
-                  asChild
-                  variant="primary"
-                  size="small"
-                  className="border border-ui-border"
-                >
-                  <Link to="/login">Zaloguj</Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="secondary"
-                  size="small"
-                  className="border border-ui-border"
-                >
-                  <Link to="/register">Zarejestruj się</Link>
-                </Button>
-              </div>
-            )}
+          <div className="hidden md:block">
+            <NavLinks />
           </div>
-
           <button
-            className="md:hidden p-2 text-text-main"
+            className="md:hidden p-2 text-text-main hover:bg-white/5 rounded-lg transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label={isMenuOpen ? "Zamknij menu" : "Otwórz menu"}
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
-
         {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-bg-body/80 backdrop-blur-xl border-b border-ui-border z-100 shadow-2xl animate-in fade-in slide-in-from-top-2">
-            <div className="p-6 flex flex-col items-center gap-4">
-              {isLoggedIn ? (
-                <>
-                  {user?.isVerified || isResetPage ? (
-                    <Button
-                      asChild
-                      variant="primary"
-                      size="medium"
-                      className="border border-ui-border"
-                    >
-                      <Link to="/dashboard">Panel Gracza</Link>
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="destructive"
-                      actionStyle="filled"
-                      isPulsing={true}
-                      size="medium"
-                    >
-                      <Link to="/verify-email">Weryfikacja konta</Link>
-                    </Button>
-                  )}
-                  <Button
-                    variant="destructive"
-                    actionStyle="outline-subtle"
-                    size="medium"
-                    onClick={onLogout}
-                  >
-                    Wyloguj
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    asChild
-                    variant="primary"
-                    size="medium"
-                    className="border border-ui-border"
-                  >
-                    <Link to="/login">Zaloguj</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="secondary"
-                    size="medium"
-                    className="border border-ui-border"
-                  >
-                    <Link to="/register">Zarejestruj się</Link>
-                  </Button>
-                </>
-              )}
+          <div className="md:hidden absolute top-full left-0 w-full bg-bg-body/95 backdrop-blur-2xl border-b border-ui-border z-100 shadow-2xl animate-in fade-in slide-in-from-top-2">
+            <div className="p-8">
+              <NavLinks mobile />
             </div>
           </div>
         )}
