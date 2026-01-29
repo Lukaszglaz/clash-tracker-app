@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { type FC, lazy, Suspense } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 
 import { Layout } from "./components/Layout/Layout";
 import { ProtectedRoute, PublicRoute } from "./components/Guards/Guards";
@@ -54,7 +54,12 @@ export const App: FC = () => {
   return (
     <AuthProvider>
       <ScrollToTop />
-      <ToastContainer theme="dark" position="top-right" />
+      <ToastContainer
+        theme="dark"
+        position="top-right"
+        transition={Zoom}
+        autoClose={3000}
+      />
 
       <Suspense fallback={<div className="min-h-screen bg-bg-page" />}>
         <Routes>

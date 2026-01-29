@@ -126,3 +126,64 @@ body {
   background: var(--color-checked-bg);
   color: var(--color-accent);
 }
+.Toastify__toast {
+  @apply rounded-2xl! border! border-ui-border! bg-bg-card/90! backdrop-blur-xl! shadow-[0_20px_50px_rgba(0,0,0,0.5)]!;
+  font-family: inherit;
+  padding: 16px !important;
+  min-height: 74px !important;
+}
+
+.Toastify__toast-body {
+  @apply text-sm! font-bold! text-text-main! items-center!;
+}
+
+.Toastify__progress-bar {
+  height: 8px !important;
+  bottom: 0 !important;
+  @apply rounded-full! opacity-100!;
+}
+
+.Toastify__toast--success {
+  @apply border-success/40!;
+}
+.Toastify__progress-bar--success {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 217, 119, 0) 0%,
+    rgba(0, 217, 119, 1) 100%
+  ) !important;
+  box-shadow: 0 0 20px rgba(0, 217, 119, 0.6);
+}
+
+.Toastify__toast--error {
+  @apply border-error/40!;
+}
+.Toastify__progress-bar--error {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 77, 77, 0) 0%,
+    rgba(255, 77, 77, 1) 100%
+  ) !important;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+}
+
+.Toastify__toast--info {
+  @apply border-brand/40!;
+}
+.Toastify__progress-bar--info {
+  background: linear-gradient(
+    90deg,
+    rgba(188, 71, 251, 0) 0%,
+    rgba(188, 71, 251, 1) 100%
+  ) !important;
+  box-shadow: 0 0 20px rgba(188, 71, 251, 0.6);
+}
+
+.Toastify__toast-icon {
+  width: 26px !important;
+}
+
+.Toastify__close-button {
+  @apply text-text-dim hover:text-brand! opacity-100! transition-all!;
+  align-self: center !important;
+}
