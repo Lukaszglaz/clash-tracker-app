@@ -50,7 +50,7 @@ export const Button: React.FC<ButtonProps> = ({
     success: clsx(
       "focus:outline-success transition-all",
       actionStyle === "filled" &&
-        "bg-success text-white hover:bg-success-hover shadow-lg shadow-success/20",
+        "bg-success hover:bg-success-hover shadow-lg shadow-success/20",
       actionStyle === "outline-subtle" &&
         "bg-success/10 text-success border border-success/20 hover:bg-success/20",
     ),
@@ -59,7 +59,7 @@ export const Button: React.FC<ButtonProps> = ({
       actionStyle === "filled" &&
         "bg-error text-white hover:bg-error-hover shadow-lg shadow-error/20",
       actionStyle === "outline-subtle" &&
-        "bg-error/10 text-error border border-error/20 hover:bg-error/20",
+        "bg-error/10 border border-error/20 hover:bg-error/20",
     ),
     clean: clsx(
       "bg-transparent text-text-dim hover:text-brand transition-colors focus:outline-brand",
