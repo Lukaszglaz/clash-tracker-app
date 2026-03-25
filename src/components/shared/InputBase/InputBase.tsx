@@ -40,7 +40,7 @@ export const InputBase = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={props.id}
             className={clsx(
-              "text-[10px] uppercase tracking-[0.2em] font-black ml-2 transition-colors",
+              "ml-2 text-[0.72rem] font-black uppercase tracking-[0.12em] transition-colors",
               error ? "text-error" : isFocused ? "text-brand" : "text-text-dim",
             )}
           >
@@ -86,7 +86,7 @@ export const InputBase = forwardRef<HTMLInputElement, InputProps>(
               rightIcon ? "pr-14" : "pr-6",
               error
                 ? "border-error focus:border-error shadow-sm shadow-error/10"
-                : "border-ui-border focus:border-brand shadow-sm focus:shadow-brand/10",
+                : "border-ui-border focus:shadow-brand/10",
               className,
             )}
           />

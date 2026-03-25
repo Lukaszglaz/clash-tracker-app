@@ -40,7 +40,7 @@ export const Checkbox = ({
       </div>
       <span
         className={clsx(
-          "text-[10px] uppercase font-black tracking-wider transition-colors",
+          "min-w-0 text-sm leading-6 transition-colors",
           error
             ? "text-error"
             : "text-text-dim opacity-70 group-hover:opacity-100 group-hover:text-text-main",
