@@ -1,23 +1,23 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap");
 
 :root {
   /* BACKGROUNDS */
-  --bg-page: #f8f8f8;
+  --bg-page: #f4f2f7;
   --bg-surface: #ffffff;
+  --bg-surface-muted: #f0ebf3;
 
   /* TEXT */
-  --text-primary: #0d0d0d;
-  --text-secondary: #4a4a4a;
-  --text-tertiary: #9d3088;
+  --text-primary: #17111f;
+  --text-secondary: #5d5768;
+  --text-tertiary: #8e2f78;
 
   /* BRAND / ACCENT */
-  --color-accent: #d43fb8;
-  --color-accent-hover: #f062d4;
-  --color-checked-bg: #2d0a2d;
+  --color-accent: #c13da7;
+  --color-accent-hover: #d85cc0;
+  --color-checked-bg: #f4d6ef;
 
   /* INTERFACE */
-  --color-border: #e0e0e0;
+  --color-border: #ddd4e3;
 
   /* SUCCESS (Jasny motyw) */
   --color-success: #10b981;
@@ -38,21 +38,22 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* BACKGROUNDS */
-    --bg-page: #000000;
-    --bg-surface: #121212;
+    --bg-page: #0d0a12;
+    --bg-surface: #17131d;
+    --bg-surface-muted: #201a29;
 
     /* TEXT */
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0a0;
-    --text-tertiary: #ff4eb8;
+    --text-primary: #f7f3fa;
+    --text-secondary: #aea6ba;
+    --text-tertiary: #ff70cd;
 
     /* BRAND / ACCENT */
-    --color-accent: #bc47fb;
-    --color-accent-hover: #d682ff;
-    --color-checked-bg: #1a0b1a;
+    --color-accent: #cf63ff;
+    --color-accent-hover: #df90ff;
+    --color-checked-bg: #311338;
 
     /* INTERFACE */
-    --color-border: #2a2a2a;
+    --color-border: #30263c;
 
     /* SUCCESS (Przygaszony neon - bezpieczny dla oczu) */
     --color-success: #00d977;
@@ -74,6 +75,7 @@
 @theme inline {
   --color-bg-body: var(--bg-page);
   --color-bg-card: var(--bg-surface);
+  --color-bg-muted: var(--bg-surface-muted);
   --color-text-main: var(--text-primary);
   --color-text-dim: var(--text-secondary);
   --color-brand: var(--color-accent);
@@ -97,11 +99,20 @@
   --color-icon-brand: var(--icon-brand);
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
 body {
   background: var(--bg-page);
   color: var(--text-primary);
   font-family: "Poppins", sans-serif;
   margin: 0;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 0.3s ease,
