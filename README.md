@@ -1,73 +1,142 @@
-# React + TypeScript + Vite
+![ClashTracker logo](public/trackerlogo.svg)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# ClashTracker
 
-Currently, two official plugins are available:
+ClashTracker is a frontend application for Clash of Clans players. It combines a marketing homepage, authentication flow, and a player dashboard focused on account overview, village progress, and profile settings.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Current application version: `0.5.0`  
+Release channel: `public beta`
 
-## React Compiler
+## Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The current repository includes:
 
-## Expanding the ESLint configuration
+- a product landing page
+- login, registration, email verification, and password recovery flows
+- a player dashboard with views for overview, army, defense, resources, traps, laboratory, heroes, pets, and settings
+- token-based authentication stored in `localStorage`
+- account settings integrated with the backend API
+- local dashboard display preferences saved per browser
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Modules planned for later iterations:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- clan, war, and CWL sections
+- Builder Base and Clan Capital support
+- siege machines, achievements, and hero equipment
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Project Status
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+This is not a `1.0` release yet. The frontend is already structured like a fuller product, but only part of the dashboard is backed by live API data today.
+
+- authentication and account settings already communicate with the backend
+- several dashboard sections currently use prepared example data and UI scaffolding
+- automated tests and Storybook are not configured yet
+- the user-facing interface and validation messages are intentionally written in Polish
+
+## Tech Stack
+
+| Technology | Version |
+| ---------- | ------- |
+| Vite | ^7.2.4 |
+| React | ^19.2.0 |
+| TypeScript | ~5.9.3 |
+| Tailwind CSS | ^4.1.18 |
+| React Router DOM | ^7.12.0 |
+| Axios | ^1.13.2 |
+| ESLint | ^9.39.1 |
+| Yarn | 1.x |
+
+## Main Libraries
+
+| Library | Purpose |
+| ------- | ------- |
+| `react-router-dom` | application routing and guarded routes |
+| `axios` | HTTP communication with the backend |
+| `react-toastify` | toast notifications and feedback |
+| `lucide-react` | icon set used across the UI |
+| `@radix-ui/react-slot` | composable shared UI primitives |
+| `clsx` | conditional class name composition |
+
+## Local Requirements
+
+To run the project locally, prepare:
+
+- a recent Node.js version compatible with Vite 7
+- Yarn Classic `1.x`
+- a working backend available through `VITE_API_URL`, or a local API exposed at `http://localhost:3000`
+
+## Setup
+
+1. Clone the repository.
+2. Go to the project directory:
+
+```bash
+cd clash-tracker-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+yarn install
 ```
+
+4. Configure the backend URL:
+
+```bash
+VITE_API_URL=http://localhost:3000
+```
+
+If your backend already uses an `/api` suffix, the frontend will automatically adapt the user settings endpoint.
+
+## Running the App
+
+Start the development server:
+
+```bash
+yarn dev
+```
+
+By default, the app will be available at [http://localhost:5173](http://localhost:5173).
+
+## Available Scripts
+
+```bash
+yarn dev      # start the Vite development server
+yarn build    # create a production build
+yarn lint     # run ESLint across the repository
+yarn preview  # preview the production build locally
+```
+
+## API Integration
+
+The frontend currently relies on the following backend areas:
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /auth/verify`
+- `POST /auth/forgot-password`
+- `POST /auth/reset-password`
+- `GET /auth/me`
+- `GET/PATCH /api/users/settings` or `GET/PATCH /users/settings`
+
+The authentication token is stored under the `token` key in `localStorage` and is automatically attached as a `Bearer` token in the `Authorization` header.
+
+## Project Structure
+
+Key directories:
+
+- `src/pages` for page-level views and dashboard sections
+- `src/components` for shared UI building blocks
+- `src/context` for authentication state management
+- `src/api` for HTTP client configuration and API helpers
+- `src/schemas` for form validation
+- `public` for icons, manifest files, and static assets
+
+## Recommended Next Steps
+
+The most natural next improvements for this codebase are:
+
+- connect live player data to every dashboard section
+- introduce unit and integration tests
+- add the missing informational pages linked from the footer
+- expand the dashboard with clan and seasonal modules
