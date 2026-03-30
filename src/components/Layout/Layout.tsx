@@ -1,7 +1,7 @@
 import { type FC, type ReactNode } from "react";
 import { Navbar } from "../Navbar/Navbar";
 import { Footer } from "../Footer/Footer";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth";
 
 interface LayoutProps {
   children: ReactNode;

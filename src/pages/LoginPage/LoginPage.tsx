@@ -1,7 +1,8 @@
 import { useState, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/axios";
-import { useAuth } from "../../context/AuthContext";
+import { getApiErrorMessage } from "../../api/errors";
+import { useAuth } from "../../context/auth";
 import { toast } from "react-toastify";
 import {
   Mail,
@@ -43,9 +44,11 @@ export const LoginPage: FC = () => {
       } else {
         navigate("/dashboard", { replace: true });
       }
-    } catch (err: any) {
-      const errMsg =
-        err.response?.data?.message || "Błąd logowania. Spróbuj ponownie.";
+    } catch (error: unknown) {
+      const errMsg = getApiErrorMessage(
+        error,
+        "Błąd logowania. Spróbuj ponownie.",
+      );
       setError(errMsg);
       toast.error(errMsg);
     } finally {

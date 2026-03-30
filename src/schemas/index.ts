@@ -6,7 +6,7 @@ export interface Validation {
 }
 
 export function checkValidation(
-  data: any,
+  data: unknown,
   schema: ZodSchema,
 ): Validation[] | null {
   const results = schema.safeParse(data);
