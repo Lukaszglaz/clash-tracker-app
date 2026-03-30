@@ -34,7 +34,7 @@ export const ResetPasswordPage: FC = () => {
   useEffect(() => {
     if (!email) {
       toast.error("Wpisz najpierw swój adres e-mail.");
-      navigate("/forgot-password");
+      navigate("/forgot-password", { replace: true });
     }
   }, [email, navigate]);
 
