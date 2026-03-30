@@ -20,6 +20,8 @@ export interface SettingsOptionCardData {
   title: string;
   description: string;
   label: string;
+  enabledMessage: string;
+  disabledMessage: string;
   icon: LucideIcon;
 }
 
@@ -48,32 +50,40 @@ export const settingsOptionCards: SettingsOptionCardData[] = [
     key: "advancedPanelsEnabled",
     title: "Rozszerzone boxy danych",
     description:
-      "Dodatkowe informacje po prawej stronie po wejsciu w obiekt lub modul.",
+      "Prawa kolumna z dodatkowymi informacjami, statusami i szczegolami sekcji.",
     label: "Aktywuj prawa kolumne pod szczegoly obiektu",
+    enabledMessage: "Prawa kolumna pokazuje dodatkowe szczegoly i panele poboczne.",
+    disabledMessage: "Widok zostaje ograniczony do glownej kolumny z trescia.",
     icon: LayoutPanelTop,
   },
   {
     key: "apiSyncEnabled",
     title: "Synchronizacja danych",
     description:
-      "Odswiezanie danych gracza, klanu i pozostalych sekcji dashboardu.",
+      "Automatyczne odswiezanie danych profilu i ustawien powiazanych z kontem.",
     label: "Wlacz automatyczne odswiezanie danych",
+    enabledMessage: "Panel odswieza dane w tle, gdy profil ma przypisany tag gracza.",
+    disabledMessage: "Dane sa aktualizowane tylko po recznym wejsciu lub zapisie.",
     icon: Link2,
   },
   {
     key: "emailAlertsEnabled",
     title: "Alerty i zdarzenia",
     description:
-      "Powiadomienia o zmianach builderow, laboratorium, wojnach i stanie konta.",
+      "Widok alertow konta, komunikacji i najwazniejszych sygnalow z panelu.",
     label: "Pokazuj alerty systemowe i eventy",
+    enabledMessage: "Sekcja alertow pozostaje widoczna razem z informacjami o koncie.",
+    disabledMessage: "Alerty sa ukryte, a panel pokazuje tylko podstawowe dane.",
     icon: Bell,
   },
   {
     key: "customSystemsEnabled",
     title: "Moduly dodatkowe",
     description:
-      "Sekcje pod kalkulatory, statusy, cache i pozostale moduly dodatkowe.",
+      "Dodatkowe sekcje pod integracje, kalkulatory, cache i kolejne moduly.",
     label: "Pokazuj sekcje dodatkowe",
+    enabledMessage: "Widoczne sa integracje i miejsce na dodatkowe moduly systemowe.",
+    disabledMessage: "Dodatkowe integracje i moduly pozostaja ukryte.",
     icon: ServerCog,
   },
 ];

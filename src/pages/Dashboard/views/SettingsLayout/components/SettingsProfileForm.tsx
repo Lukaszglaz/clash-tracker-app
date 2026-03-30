@@ -3,6 +3,7 @@ import { BadgeCheck, Fingerprint, Save, ShieldX, User } from "lucide-react";
 import { Button } from "../../../../../components/shared/Button/Button";
 import { Checkbox } from "../../../../../components/shared/Checkbox/Checkbox";
 import { InputBase } from "../../../../../components/shared/InputBase/InputBase";
+import { type SettingsFieldErrors } from "../settings.types";
 
 interface SettingsProfileFormProps {
   firstName: string;
@@ -13,6 +14,7 @@ interface SettingsProfileFormProps {
   isVerified: boolean;
   termsAccepted: boolean;
   loading: boolean;
+  fieldErrors: SettingsFieldErrors;
   onSubmit: (event: React.FormEvent) => void;
   onFirstNameChange: (value: string) => void;
   onLastNameChange: (value: string) => void;
@@ -30,6 +32,7 @@ export const SettingsProfileForm: FC<SettingsProfileFormProps> = ({
   isVerified,
   termsAccepted,
   loading,
+  fieldErrors,
   onSubmit,
   onFirstNameChange,
   onLastNameChange,
@@ -46,12 +49,14 @@ export const SettingsProfileForm: FC<SettingsProfileFormProps> = ({
           onChange={(event) => onFirstNameChange(event.target.value)}
           placeholder="Twoje imie"
           leftIcon={<User />}
+          error={fieldErrors.firstName}
         />
         <InputBase
           label="Nazwisko"
           value={lastName}
           onChange={(event) => onLastNameChange(event.target.value)}
           placeholder="Twoje nazwisko"
+          error={fieldErrors.lastName}
         />
         <div className="md:col-span-2">
           <InputBase
@@ -61,6 +66,7 @@ export const SettingsProfileForm: FC<SettingsProfileFormProps> = ({
             placeholder="#P8Y2L9VPP"
             className="font-black uppercase tracking-[0.12em] text-brand"
             leftIcon={<Fingerprint />}
+            error={fieldErrors.playerTag}
           />
         </div>
       </div>
@@ -128,6 +134,9 @@ export const SettingsProfileForm: FC<SettingsProfileFormProps> = ({
         </p>
         <p className="mt-2 text-sm leading-7 text-text-dim">
           Dane profilu, komunikacja, status konta oraz pola pod rozszerzenia ustawien.
+        </p>
+        <p className="mt-2 text-sm leading-7 text-text-dim">
+          Tag gracza jest zapisywany w jednym formacie z prefiksem <code>#</code>.
         </p>
       </div>
 

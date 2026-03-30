@@ -52,21 +52,21 @@ export const SettingsStatusPanel: FC<SettingsStatusPanelProps> = ({
 
         <div className="grid gap-3">
           <div className="flex items-center justify-between gap-4 rounded-2xl border border-ui-border/70 bg-bg-muted/55 p-4">
-            <span className="text-sm font-bold text-text-main">Player Tag</span>
+            <span className="text-sm font-bold text-text-main">Tag gracza</span>
             <span className="text-sm font-black uppercase tracking-[0.1em] text-brand">
               {playerTag || "---"}
             </span>
           </div>
           <div className="flex items-center justify-between gap-4 rounded-2xl border border-ui-border/70 bg-bg-muted/55 p-4">
-            <span className="text-sm font-bold text-text-main">Email alerts</span>
+            <span className="text-sm font-bold text-text-main">Alerty email</span>
             <span className="text-sm font-black text-text-main">
-              {emailAlertsEnabled ? "ON" : "OFF"}
+              {emailAlertsEnabled ? "Aktywne" : "Wylaczone"}
             </span>
           </div>
           <div className="flex items-center justify-between gap-4 rounded-2xl border border-ui-border/70 bg-bg-muted/55 p-4">
-            <span className="text-sm font-bold text-text-main">API sync</span>
+            <span className="text-sm font-bold text-text-main">Synchronizacja</span>
             <span className="text-sm font-black text-text-main">
-              {apiSyncEnabled ? "READY" : "MANUAL"}
+              {apiSyncEnabled ? "Automatyczna" : "Reczna"}
             </span>
           </div>
         </div>
