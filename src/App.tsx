@@ -74,11 +74,11 @@ export const App: FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/check-email" element={<CheckEmailPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             <Route element={<PublicRoute />}>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
             </Route>
 
             {/* CHRONIONE TRASY */}

@@ -1,5 +1,5 @@
 import { useState, type FC, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
 import { toast } from "react-toastify";
 import { Mail, Info } from "lucide-react";
@@ -7,9 +7,12 @@ import { Button } from "../../components/shared/Button/Button";
 import { InputBase } from "../../components/shared/InputBase/InputBase";
 
 export const ForgotPasswordPage: FC = () => {
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [email, setEmail] = useState(
+    ((location.state as { email?: string } | null)?.email || "").trim(),
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
