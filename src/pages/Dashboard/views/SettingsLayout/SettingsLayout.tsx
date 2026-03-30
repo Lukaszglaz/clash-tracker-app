@@ -4,6 +4,7 @@ import { AlertCircle, Loader2, ShieldCheck } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { api } from "../../../../api/axios";
+import { getApiErrorMessage } from "../../../../api/errors";
 import { checkValidation } from "../../../../schemas";
 import { settingsSchema } from "../../../../schemas/settings.schema";
 import { Button } from "../../../../components/shared/Button/Button";
@@ -29,6 +30,7 @@ import type {
   SettingsPanelOptions,
 } from "./settings.types";
 import {
+  arePanelOptionsEqual,
   getMarketingAcceptedValue,
   getSettingsEndpoint,
   getStoredPanelOptions,
@@ -56,8 +58,10 @@ export const SettingsLayout: FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [marketingAccepted, setMarketingAccepted] = useState(false);
-  const [localSettings, setLocalSettings] =
+  const [savedLocalSettings, setSavedLocalSettings] =
     useState<SettingsPanelOptions>(() => getStoredPanelOptions(defaultLocalSettings));
+  const [localSettings, setLocalSettings] =
+    useState<SettingsPanelOptions>(savedLocalSettings);
   const [fullData, setFullData] = useState<NestUserSettings | null>(null);
   const [fieldErrors, setFieldErrors] = useState<SettingsFieldErrors>({});
 
@@ -69,6 +73,11 @@ export const SettingsLayout: FC = () => {
       ...currentSettings,
       [key]: value,
     }));
+  };
+
+  const persistLocalSettings = (nextSettings: SettingsPanelOptions) => {
+    savePanelOptions(nextSettings);
+    setSavedLocalSettings({ ...nextSettings });
   };
 
   const hydrateForm = (data: NestUserSettings) => {
@@ -94,9 +103,11 @@ export const SettingsLayout: FC = () => {
         const response = await api.get<NestUserSettings>(settingsEndpoint);
         hydrateForm(response.data);
         setLastSyncedAt(new Date().toISOString());
-      } catch (error: any) {
-        const errorMessage =
-          error.response?.data?.message || "Blad podczas pobierania danych";
+      } catch (error: unknown) {
+        const errorMessage = getApiErrorMessage(
+          error,
+          "Blad podczas pobierania danych",
+        );
 
         if (!silent) {
           setLoadError(errorMessage);
@@ -114,10 +125,6 @@ export const SettingsLayout: FC = () => {
   }, [fetchSettings]);
 
   useEffect(() => {
-    savePanelOptions(localSettings);
-  }, [localSettings]);
-
-  useEffect(() => {
     if (!localSettings.apiSyncEnabled) return;
 
     const syncInterval = window.setInterval(() => {
@@ -126,6 +133,21 @@ export const SettingsLayout: FC = () => {
 
     return () => window.clearInterval(syncInterval);
   }, [fetchSettings, localSettings.apiSyncEnabled]);
+
+  const hasPendingLocalSettings = !arePanelOptionsEqual(
+    localSettings,
+    savedLocalSettings,
+  );
+
+  const handleSaveLocalSettings = () => {
+    persistLocalSettings(localSettings);
+    toast.success("Ustawienia panelu zapisane.");
+  };
+
+  const handleResetLocalSettings = () => {
+    setLocalSettings(savedLocalSettings);
+    toast.info("Przywrocono ostatnio zapisane ustawienia panelu.");
+  };
 
   const handleSave = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -165,12 +187,19 @@ export const SettingsLayout: FC = () => {
         marketingConsent: marketingAccepted,
       });
 
-      toast.success("Baza danych zaktualizowana");
+      if (hasPendingLocalSettings) {
+        persistLocalSettings(localSettings);
+      }
+
+      toast.success(
+        hasPendingLocalSettings
+          ? "Zmiany konta i panelu zostaly zapisane."
+          : "Zmiany konta zostaly zapisane.",
+      );
       setPlayerTag(normalizedTag);
       await fetchSettings();
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || "Blad zapisu danych";
+    } catch (error: unknown) {
+      const errorMessage = getApiErrorMessage(error, "Blad zapisu danych");
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -311,7 +340,10 @@ export const SettingsLayout: FC = () => {
           <SettingsLocalOptionsPanel
             localSettings={localSettings}
             playerTag={playerTag}
+            hasPendingChanges={hasPendingLocalSettings}
             onOptionChange={updateLocalSetting}
+            onSave={handleSaveLocalSettings}
+            onReset={handleResetLocalSettings}
           />
 
           {localSettings.customSystemsEnabled ? <SettingsIntegrationsPanel /> : null}
