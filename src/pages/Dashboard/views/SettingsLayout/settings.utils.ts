@@ -77,3 +77,12 @@ export const savePanelOptions = (options: SettingsPanelOptions) => {
     return;
   }
 };
+
+export const arePanelOptionsEqual = (
+  first: SettingsPanelOptions,
+  second: SettingsPanelOptions,
+) =>
+  first.emailAlertsEnabled === second.emailAlertsEnabled &&
+  first.apiSyncEnabled === second.apiSyncEnabled &&
+  first.advancedPanelsEnabled === second.advancedPanelsEnabled &&
+  first.customSystemsEnabled === second.customSystemsEnabled;
