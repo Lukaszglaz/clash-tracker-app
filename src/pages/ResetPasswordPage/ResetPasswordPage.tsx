@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { api } from "../../api/axios";
+import { getApiErrorMessage } from "../../api/errors";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { Button } from "../../components/shared/Button/Button";
@@ -85,8 +86,8 @@ export const ResetPasswordPage: FC = () => {
         },
       });
       navigate("/login");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Błąd resetowania.");
+    } catch (error: unknown) {
+      setError(getApiErrorMessage(error, "Błąd resetowania."));
     } finally {
       setIsLoading(false);
     }

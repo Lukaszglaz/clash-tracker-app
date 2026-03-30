@@ -1,6 +1,7 @@
 import { useState, type FC, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/axios";
+import { getApiErrorMessage } from "../../api/errors";
 import { registerSchema } from "../../schemas/register.schema";
 import { checkValidation } from "../../schemas";
 import { toast } from "react-toastify";
@@ -93,7 +94,7 @@ export const RegisterPage: FC = () => {
 
     if (validationErrors && validationErrors.length > 0) {
       const errorMap: { [key: string]: string } = {};
-      validationErrors.forEach((v: any) => {
+      validationErrors.forEach((v) => {
         errorMap[v.key] = v.error;
       });
       setFieldErrors(errorMap);
@@ -102,7 +103,15 @@ export const RegisterPage: FC = () => {
       return;
     }
 
-    const { confirmPassword, ...dataToSend } = dataToValidate;
+    const dataToSend = {
+      firstName: dataToValidate.firstName,
+      lastName: dataToValidate.lastName,
+      email: dataToValidate.email,
+      playerTag: dataToValidate.playerTag,
+      password: dataToValidate.password,
+      marketingConsent: dataToValidate.marketingConsent,
+      termsAccepted: dataToValidate.termsAccepted,
+    };
 
     try {
       await api.post("/auth/register", dataToSend);
@@ -119,8 +128,8 @@ export const RegisterPage: FC = () => {
         replace: true,
         state: { email: dataToSend.email },
       });
-    } catch (err: any) {
-      const errMsg = err.response?.data?.message || "Błąd rejestracji.";
+    } catch (error: unknown) {
+      const errMsg = getApiErrorMessage(error, "Błąd rejestracji.");
       setError(errMsg);
       toast.error(errMsg);
     } finally {

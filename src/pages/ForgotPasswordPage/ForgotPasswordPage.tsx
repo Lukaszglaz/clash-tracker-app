@@ -1,6 +1,7 @@
 import { useState, type FC, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axios";
+import { getApiErrorMessage } from "../../api/errors";
 import { toast } from "react-toastify";
 import { Mail, Info } from "lucide-react";
 import { Button } from "../../components/shared/Button/Button";
@@ -31,9 +32,9 @@ export const ForgotPasswordPage: FC = () => {
       });
 
       navigate("/reset-password", { state: { email } });
-    } catch (err: any) {
+    } catch (error: unknown) {
       toast.error(
-        err.response?.data?.message || "Nie znaleziono takiego użytkownika",
+        getApiErrorMessage(error, "Nie znaleziono takiego użytkownika"),
       );
     } finally {
       setIsLoading(false);
