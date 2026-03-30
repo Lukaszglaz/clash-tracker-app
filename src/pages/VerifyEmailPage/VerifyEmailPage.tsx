@@ -9,9 +9,10 @@ import {
 } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { api } from "../../api/axios";
+import { getApiErrorMessage } from "../../api/errors";
 import { toast } from "react-toastify";
 import { ShieldCheck, Lock } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth";
 import { Button } from "../../components/shared/Button/Button";
 import { OTPInput } from "../../components/shared/OTPInput/OTPInput";
 
@@ -28,13 +29,18 @@ export const VerifyEmailPage: FC = () => {
   const emailToVerify = location.state?.email || user?.email;
 
   useEffect(() => {
+    if (user?.isVerified) {
+      navigate("/dashboard", { replace: true });
+      return;
+    }
+
     if (!emailToVerify) {
       toast.warn(
         "Proszę podać e-mail lub zalogować się, aby kontynuować weryfikację.",
       );
       navigate("/login", { replace: true });
     }
-  }, [emailToVerify, navigate]);
+  }, [emailToVerify, navigate, user?.isVerified]);
 
   const handleChange = (index: number, value: string) => {
     if (!/^[0-9A-Z]*$/.test(value)) return;
@@ -106,8 +112,8 @@ export const VerifyEmailPage: FC = () => {
       } else {
         navigate("/login", { replace: true });
       }
-    } catch (err: any) {
-      const errMsg = err.response?.data?.message || "Nieprawidłowy kod.";
+    } catch (error: unknown) {
+      const errMsg = getApiErrorMessage(error, "Nieprawidłowy kod.");
       setError(errMsg);
       toast.error(errMsg);
     } finally {

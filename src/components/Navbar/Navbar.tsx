@@ -1,6 +1,6 @@
-import { type FC, useState, useEffect } from "react";
+import { type FC, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth";
 import { Button } from "../shared/Button/Button";
 import { Menu, X } from "lucide-react";
 
@@ -14,20 +14,17 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location.pathname]);
-
   const isResetPage = location.pathname === "/reset-password";
   const isVerifyPage = location.pathname === "/verify-email";
 
   const showVerifyAlert =
     isLoggedIn && user && !user.isVerified && !isVerifyPage && !isResetPage;
-  const NavLinks = ({ mobile = false }: { mobile?: boolean }) => {
+  const renderNavLinks = (mobile = false) => {
     const size = mobile ? "medium" : "small";
     const containerClass = mobile
       ? "flex flex-col items-center gap-4 w-full"
       : "flex items-center gap-2";
+    const handleNavigation = mobile ? () => setIsMenuOpen(false) : undefined;
 
     return (
       <div className={containerClass}>
@@ -37,7 +34,9 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           size={size}
           className="border border-ui-border"
         >
-          <Link to="/">Strona Główna</Link>
+          <Link to="/" onClick={handleNavigation}>
+            Strona Główna
+          </Link>
         </Button>
 
         {isLoggedIn ? (
@@ -49,7 +48,9 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                 size={size}
                 className="border border-ui-border"
               >
-                <Link to="/dashboard">Panel Gracza</Link>
+                <Link to="/dashboard" onClick={handleNavigation}>
+                  Panel Gracza
+                </Link>
               </Button>
             ) : (
               <Button
@@ -58,14 +59,19 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                 size={size}
                 isPulsing={true}
               >
-                <Link to="/verify-email">Weryfikacja</Link>
+                <Link to="/verify-email" onClick={handleNavigation}>
+                  Weryfikacja
+                </Link>
               </Button>
             )}
             <Button
               variant="destructive"
               actionStyle="outline-subtle"
               size={size}
-              onClick={onLogout}
+              onClick={() => {
+                setIsMenuOpen(false);
+                onLogout();
+              }}
             >
               Wyloguj
             </Button>
@@ -78,7 +84,9 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               size={size}
               className="border border-ui-border"
             >
-              <Link to="/login">Zaloguj</Link>
+              <Link to="/login" onClick={handleNavigation}>
+                Zaloguj
+              </Link>
             </Button>
             <Button
               asChild
@@ -86,7 +94,9 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
               size={size}
               className="border border-ui-border"
             >
-              <Link to="/register">Zarejestruj się</Link>
+              <Link to="/register" onClick={handleNavigation}>
+                Zarejestruj się
+              </Link>
             </Button>
           </>
         )}
@@ -116,7 +126,7 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             </h1>
           </Link>
           <div className="hidden md:block">
-            <NavLinks />
+            {renderNavLinks()}
           </div>
           <button
             className="md:hidden p-2 text-text-main hover:bg-white/5 rounded-lg transition-colors"
@@ -129,7 +139,7 @@ export const Navbar: FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-bg-body/95 backdrop-blur-2xl border-b border-ui-border z-100 shadow-2xl animate-in fade-in slide-in-from-top-2">
             <div className="p-8">
-              <NavLinks mobile />
+              {renderNavLinks(true)}
             </div>
           </div>
         )}
