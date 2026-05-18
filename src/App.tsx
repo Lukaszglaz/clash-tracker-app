@@ -6,15 +6,6 @@ import { Layout } from "./components/Layout/Layout";
 import { ProtectedRoute, PublicRoute } from "./components/Guards/Guards";
 import { AuthProvider } from "./context/AuthContext";
 import { ScrollToTop } from "./components/shared/ScrollToTop/ScrollToTop";
-import { SettingsLayout } from "./pages/Dashboard/views/SettingsLayout/SettingsLayout";
-import { PlayerOverview } from "./pages/Dashboard/views/PlayerOverview/PlayerOverview";
-import { ArmyLayout } from "./pages/Dashboard/views/ArmyLayout/ArmyLayout";
-import { DefenseLayout } from "./pages/Dashboard/views/DefenseLayout/DefenseLayout";
-import { ResourcesLayout } from "./pages/Dashboard/views/ResourcesLayout/ResourcesLayout";
-import { TrapsLayout } from "./pages/Dashboard/views/TrapsLayout/TrapsLayout";
-import { PetsLayout } from "./pages/Dashboard/views/PetsLayout/PetsLayout";
-import { LaboratoryLayout } from "./pages/Dashboard/views/LabolatoryLayout/LabolatoryLayout";
-import { HeroesLayout } from "./pages/Dashboard/views/HeroesLayout/HeroesLayout";
 
 // --- LAZY IMPORTS ---
 const HomePage = lazy(() =>
@@ -89,17 +80,7 @@ export const App: FC = () => {
 
             {/* CHRONIONE TRASY */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<DashBoardPage />}>
-                <Route index element={<PlayerOverview />} />
-                <Route path="army" element={<ArmyLayout />} />
-                <Route path="defense" element={<DefenseLayout />} />
-                <Route path="resources" element={<ResourcesLayout />} />
-                <Route path="traps" element={<TrapsLayout />} />
-                <Route path="laboratory" element={<LaboratoryLayout />} />
-                <Route path="heroes" element={<HeroesLayout />} />
-                <Route path="pets" element={<PetsLayout />} />
-                <Route path="settings" element={<SettingsLayout />} />
-              </Route>
+              <Route path="/dashboard/*" element={<DashBoardPage />} />
             </Route>
           </Route>
 
