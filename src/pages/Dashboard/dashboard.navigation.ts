@@ -1,75 +1,137 @@
 import {
-  Boxes,
-  Castle,
-  Flag,
   LayoutDashboard,
+  Castle,
   Pickaxe,
-  ScrollText,
-  Sparkles,
-  type LucideIcon,
+  Tent,
+  Shield,
+  UserCircle,
+  Settings,
 } from "lucide-react";
-
-interface DashboardNavItem {
-  id: string;
-  label: string;
-  description: string;
-  to: string;
-  icon: LucideIcon;
-}
+import type { DashboardNavItem } from "./types/dashboard.types";
 
 export const dashboardNavigation: DashboardNavItem[] = [
   {
     id: "overview",
-    label: "Start",
-    description: "Nowa baza panelu i glowne wejscia do sekcji.",
+    label: "Dashboard",
+    description: "Pulpit nawigacyjny",
     to: "/dashboard",
     icon: LayoutDashboard,
+    category: "general",
   },
   {
-    id: "homeVillage",
+    id: "home",
     label: "Home Village",
-    description: "Armia, bohaterowie i struktury glownej wyspy.",
-    to: "/dashboard/home-village",
+    description: "Baza główna i ekonomia",
+    to: "/dashboard/home",
     icon: Castle,
+    category: "villages",
+    children: [
+      { label: "Podsumowanie", to: "/dashboard/home" },
+      { label: "Armia i Zaklęcia", to: "/dashboard/home/army" },
+      { label: "Bohaterowie i Pety", to: "/dashboard/home/heroes" },
+      { label: "Obrona i Pułapki", to: "/dashboard/home/defense" },
+      { label: "Ekonomia i Lab", to: "/dashboard/home/economy" },
+    ],
   },
   {
-    id: "builderBase",
+    id: "builder",
     label: "Builder Base",
-    description: "Druga wyspa rozpisana na oddzielne kategorie.",
-    to: "/dashboard/builder-base",
+    description: "Baza budowniczego",
+    to: "/dashboard/builder",
     icon: Pickaxe,
+    category: "villages",
+    children: [
+      { label: "Podsumowanie", to: "/dashboard/builder" },
+      { label: "Armia", to: "/dashboard/builder/army" },
+      { label: "Maszyny Bojowe", to: "/dashboard/builder/heroes" },
+      { label: "Obrona", to: "/dashboard/builder/defense" },
+    ],
   },
   {
-    id: "progression",
-    label: "Progression",
-    description: "Budynki produkcyjne i zaleznosci odblokowan.",
-    to: "/dashboard/progression",
-    icon: Boxes,
-  },
-  {
-    id: "achievements",
-    label: "Achievements",
-    description: "Osiagniecia i cele konta przygotowane pod live API.",
-    to: "/dashboard/achievements",
-    icon: Sparkles,
-  },
-  {
-    id: "helpers",
-    label: "Helpers",
-    description: "Pomocnicy i dodatkowe systemy wsparcia.",
-    to: "/dashboard/helpers",
-    icon: ScrollText,
+    id: "capital",
+    label: "Clan Capital",
+    description: "Stolica klanu",
+    to: "/dashboard/capital",
+    icon: Tent,
+    category: "villages",
+    children: [
+      { label: "Dzielnice", to: "/dashboard/capital/districts" },
+      { label: "Wojska Stolicy", to: "/dashboard/capital/army" },
+      { label: "Rozwój", to: "/dashboard/capital/upgrades" },
+    ],
   },
   {
     id: "clan",
-    label: "Clan",
-    description: "Baza pod dane klanu, lig i pucharkow.",
+    label: "Klan",
+    description: "Zarządzanie klanem",
     to: "/dashboard/clan",
-    icon: Flag,
+    icon: Shield,
+    category: "community",
+    children: [
+      { label: "Członkowie", to: "/dashboard/clan/members" },
+      { label: "Wojny i CWL", to: "/dashboard/clan/wars" },
+      { label: "Gry Klanowe", to: "/dashboard/clan/games" },
+    ],
+  },
+  {
+    id: "profile",
+    label: "Profil Gracza",
+    description: "Twoje statystyki",
+    to: "/dashboard/profile",
+    icon: UserCircle,
+    category: "account",
+    children: [
+      { label: "Statystyki", to: "/dashboard/profile/stats" },
+      { label: "Osiągnięcia", to: "/dashboard/profile/achievements" },
+    ],
+  },
+  {
+    id: "settings",
+    label: "Ustawienia API",
+    description: "Tokeny i preferencje",
+    to: "/dashboard/settings",
+    icon: Settings,
+    category: "account",
   },
 ];
 
-export const getDashboardCurrentSection = (pathname: string) =>
-  dashboardNavigation.find((item) =>
-    pathname === item.to || pathname.startsWith(`${item.to}/`),
-  ) ?? dashboardNavigation[0]!;
+export const isRouteActive = (pathname: string, targetPath: string) => {
+  if (targetPath === "/dashboard") {
+    return pathname === targetPath;
+  }
+  return pathname === targetPath || pathname.startsWith(`${targetPath}/`);
+};
+
+export const getDashboardCurrentSection = (
+  pathname: string,
+): { label: string; description: string } => {
+  for (const item of dashboardNavigation) {
+    if (item.children) {
+      const childMatch = item.children.find(
+        (child) => pathname === child.to || pathname.startsWith(`${child.to}/`),
+      );
+      if (childMatch) {
+        return {
+          label: childMatch.label,
+          description: item.label,
+        };
+      }
+    }
+  }
+
+  const mainMatch = dashboardNavigation.find(
+    (item) => pathname === item.to || pathname.startsWith(`${item.to}/`),
+  );
+
+  if (mainMatch) {
+    return {
+      label: mainMatch.label,
+      description: mainMatch.description,
+    };
+  }
+
+  return {
+    label: "Dashboard",
+    description: "Pulpit nawigacyjny",
+  };
+};

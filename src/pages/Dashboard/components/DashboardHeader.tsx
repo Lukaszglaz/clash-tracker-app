@@ -13,36 +13,36 @@ export const DashboardHeader = ({
   onOpenMenu,
 }: DashboardHeaderProps) => {
   return (
-    <header className="rounded-[1.55rem] border border-ui-border/80 bg-bg-card/90 px-4 py-4 shadow-[0_12px_30px_rgba(0,0,0,0.06)] sm:px-5">
+    <header className="rounded-[1.55rem] border border-ui-border/80 bg-bg-card/90 p-4 shadow-sm sm:px-5">
       <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <p className="text-[0.62rem] font-black uppercase tracking-[0.22em] text-brand/80">
             Dashboard Base
           </p>
-          <h1 className="mt-2 text-[1.25rem] font-black tracking-[-0.05em] text-text-main sm:text-[1.5rem]">
+          <h1 className="text-xl font-black tracking-tight text-text-main sm:text-2xl">
             {title}
           </h1>
-          <p className="mt-2 text-[0.8rem] leading-6 text-text-dim">
-            {description}
-          </p>
+          <p className="text-sm leading-relaxed text-text-dim">{description}</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <Button
             variant="secondary"
             size="small"
             className="rounded-full lg:hidden"
             onClick={onOpenMenu}
+            aria-label="Otwórz menu nawigacji"
           >
-            <Menu size={16} />
+            <Menu className="h-4 w-4" />
           </Button>
+
           <Button
             variant="secondary"
             size="small"
-            className="rounded-full"
+            className="rounded-full "
             disabled
           >
-            <RefreshCw size={15} />
+            <RefreshCw className="h-3.5 w-3.5 mr-2" />
             Baza gotowa
           </Button>
         </div>

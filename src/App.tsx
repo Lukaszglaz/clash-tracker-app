@@ -1,5 +1,5 @@
+import { type FC, Suspense } from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { type FC, lazy, Suspense } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 
 import { Layout } from "./components/Layout/Layout";
@@ -7,44 +7,17 @@ import { ProtectedRoute, PublicRoute } from "./components/Guards/Guards";
 import { AuthProvider } from "./context/AuthContext";
 import { ScrollToTop } from "./components/shared/ScrollToTop/ScrollToTop";
 
-// --- LAZY IMPORTS ---
-const HomePage = lazy(() =>
-  import("./pages/HomePage/HomePage").then((m) => ({ default: m.HomePage })),
-);
-const LoginPage = lazy(() =>
-  import("./pages/LoginPage/LoginPage").then((m) => ({ default: m.LoginPage })),
-);
-const RegisterPage = lazy(() =>
-  import("./pages/RegisterPage/RegisterPage").then((m) => ({
-    default: m.RegisterPage,
-  })),
-);
-const VerifyEmailPage = lazy(() =>
-  import("./pages/VerifyEmailPage/VerifyEmailPage").then((m) => ({
-    default: m.VerifyEmailPage,
-  })),
-);
-
-const CheckEmailPage = lazy(() =>
-  import("./pages/CheckEmailPage/CheckEmailPage").then((m) => ({
-    default: m.CheckEmailPage,
-  })),
-);
-const ForgotPasswordPage = lazy(() =>
-  import("./pages/ForgotPasswordPage/ForgotPasswordPage").then((m) => ({
-    default: m.ForgotPasswordPage,
-  })),
-);
-const ResetPasswordPage = lazy(() =>
-  import("./pages/ResetPasswordPage/ResetPasswordPage").then((m) => ({
-    default: m.ResetPasswordPage,
-  })),
-);
-const DashBoardPage = lazy(() =>
-  import("./pages/Dashboard/DashboardPage").then((m) => ({
-    default: m.DashBoardPage,
-  })),
-);
+import {
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  VerifyEmailPage,
+  CheckEmailPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  DashBoardPage,
+  DashboardOverview,
+} from "./routes/lazyRoutes";
 
 const AppLayout: FC = () => (
   <Layout>
@@ -80,7 +53,9 @@ export const App: FC = () => {
 
             {/* CHRONIONE TRASY */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard/*" element={<DashBoardPage />} />
+              <Route path="/dashboard" element={<DashBoardPage />}>
+                <Route index element={<DashboardOverview />} />
+              </Route>
             </Route>
           </Route>
 
