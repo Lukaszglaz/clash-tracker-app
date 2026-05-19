@@ -7,7 +7,6 @@ import { ProtectedRoute, PublicRoute } from "./components/Guards/Guards";
 import { AuthProvider } from "./context/AuthContext";
 import { ScrollToTop } from "./components/shared/ScrollToTop/ScrollToTop";
 
-// Jeden czysty import zamiast ściany constów!
 import {
   HomePage,
   LoginPage,
